@@ -1,0 +1,30 @@
+{
+    "name": "icecave/siesta",
+    "description": "A small RESTful API framework aimed at ultimate testability.",
+    "keywords": ["rest", "api", "restful", "json", "xml"],
+    "homepage": "https://github.com/IcecaveStudios/siesta",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Harris",
+            "email": "james.harris@icecave.com.au"
+        }
+    ],
+    "require": {
+        "icecave/archer": "dev-develop",
+        "symfony/http-foundation": "~2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Icecave\\Siesta": "lib",
+            "Icecave\\Siesta\\TypeCheck": "lib-typhoon"
+        }
+    },
+    "extra": {
+        "typhoon": {
+            "output-path": "lib-typhoon",
+            "validator-namespace": "Icecave\\Siesta\\TypeCheck",
+            "use-native-callable": false
+        }
+    }
+}

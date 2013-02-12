@@ -11,8 +11,11 @@
         }
     ],
     "require": {
-        "icecave/archer": "dev-develop",
         "symfony/http-foundation": "~2"
+    },
+    "require-dev": {
+        "eloquent/typhoon": "~0.8",
+        "icecave/archer": "dev-develop"
     },
     "autoload": {
         "psr-0": {

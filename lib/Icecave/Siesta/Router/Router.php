@@ -2,6 +2,7 @@
 namespace Icecave\Siesta\Router;
 
 use Icecave\Collections\Map;
+use Icecave\Siesta\Endpoint\EndpointInterface;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use Symfony\Component\HttpFoundation\Request;
 

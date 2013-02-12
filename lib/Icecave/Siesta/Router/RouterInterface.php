@@ -1,6 +1,7 @@
 <?php
 namespace Icecave\Siesta\Router;
 
+use Icecave\Siesta\Endpoint\EndpointInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface RouterInterface

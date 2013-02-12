@@ -1,5 +1,7 @@
 <?php
-namespace Icecave\Siesta\Router;
+namespace Icecave\Siesta\Endpoint;
+
+use Icecave\Siesta\Router\RouteMatch;
 
 interface EndpointInterface
 {

@@ -11,9 +11,11 @@
         }
     ],
     "require": {
+        "icecave/collections": "~0.5",
         "symfony/http-foundation": "~2"
     },
     "require-dev": {
+        "eloquent/liberator": "~1",
         "eloquent/typhoon": "~0.8",
         "icecave/archer": "dev-develop"
     },

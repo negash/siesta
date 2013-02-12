@@ -15,7 +15,7 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         $argumentCount = \count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('resource', 0, 'string');
+                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
             }
             throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 1, 'Icecave\\Siesta\\Router\\EndpointInterface');
         } elseif ($argumentCount > 2) {
@@ -24,7 +24,7 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         $value = $arguments[0];
         if (!\is_string($value)) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'resource',
+                'pathPattern',
                 0,
                 $arguments[0],
                 'string'

@@ -1,6 +1,7 @@
 <?php
 namespace Icecave\Siesta\Router;
 
+use Icecave\Collections\Map;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,14 +14,20 @@ class Router implements RouterInterface
     }
 
     /**
-     * @param string            $resource
+     * @param string            $pathPattern
      * @param EndpointInterface $endpoint
      */
-    public function route($resource, EndpointInterface $endpoint)
+    public function route($pathPattern, EndpointInterface $endpoint)
     {
         $this->typeCheck->route(func_get_args());
 
-        throw new \Exception('Not implemented.');
+        list($regex, $names) = $this->compilePathPattern($pathPattern);
+
+        $this->routes[] = array(
+            $regex,
+            $names,
+            $endpoint
+        );
     }
 
     /**
@@ -32,7 +39,27 @@ class Router implements RouterInterface
     {
         $this->typeCheck->resolve(func_get_args());
 
-        throw new \Exception('Not implemented.');
+        $method  = $request->getMethod();
+        $path    = urldecode($request->getPathInfo());
+        $matches = array();
+
+        foreach ($this->routes as $route) {
+            list($regex, $names, $endpoint) = $route;
+            if (preg_match($regex, $path, $matches)) {
+                $parameters = new Map;
+                foreach ($names as $index => $name) {
+                    $parameters->set($name, $matches[$index + 1]);
+                }
+
+                $match = new RouteMatch($endpoint, $parameters);
+
+                if ($endpoint->accepts($match)) {
+                    return $match;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

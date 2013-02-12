@@ -38,9 +38,40 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = Request::create('/foo/bar');
         $result = $this->_router->resolve($request);
 
-        $expected = new RouteMatch($this->_endpoint, new Map);
+        $parameters = new Map;
+        $expected = new RouteMatch($this->_endpoint, $parameters);
 
-        Phake::verify($this->_endpoint)->accepts($expected);
+        Phake::verify($this->_endpoint)->accepts($request, $parameters);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testRoot()
+    {
+        $this->_router->route('/', $this->_endpoint);
+
+        $request = Request::create('/');
+        $result = $this->_router->resolve($request);
+
+        $parameters = new Map;
+        $expected = new RouteMatch($this->_endpoint, $parameters);
+
+        Phake::verify($this->_endpoint)->accepts($request, $parameters);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testResolveTrailingSlash()
+    {
+        $this->_router->route('/foo/bar', $this->_endpoint);
+
+        $request = Request::create('/foo/bar/');
+        $result = $this->_router->resolve($request);
+
+        $parameters = new Map;
+        $expected = new RouteMatch($this->_endpoint, $parameters);
+
+        Phake::verify($this->_endpoint)->accepts($request, $parameters);
 
         $this->assertEquals($expected, $result);
     }
@@ -56,7 +87,22 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $parameters->set('id', '27');
         $expected = new RouteMatch($this->_endpoint, $parameters);
 
-        Phake::verify($this->_endpoint)->accepts($expected);
+        Phake::verify($this->_endpoint)->accepts($request, $parameters);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testResolveOptionalParameterNoMatch()
+    {
+        $this->_router->route('/foo/bar/:id?', $this->_endpoint);
+
+        $request = Request::create('/foo/bar');
+        $result = $this->_router->resolve($request);
+
+        $parameters = new Map;
+        $expected = new RouteMatch($this->_endpoint, $parameters);
+
+        Phake::verify($this->_endpoint)->accepts($request, $parameters);
 
         $this->assertEquals($expected, $result);
     }

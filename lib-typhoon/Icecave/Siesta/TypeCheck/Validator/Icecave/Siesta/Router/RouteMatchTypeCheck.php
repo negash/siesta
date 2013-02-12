@@ -8,7 +8,7 @@ class RouteMatchTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         $argumentCount = \count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 0, 'Icecave\\Siesta\\Router\\EndpointInterface');
+                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 0, 'Icecave\\Siesta\\Endpoint\\EndpointInterface');
             }
             throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('parameters', 1, 'Icecave\\Collections\\Map');
         } elseif ($argumentCount > 2) {

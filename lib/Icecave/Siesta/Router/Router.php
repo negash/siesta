@@ -2,7 +2,6 @@
 namespace Icecave\Siesta\Router;
 
 use Icecave\Collections\Map;
-use Icecave\Siesta\Endpoint\EndpointInterface;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -11,20 +10,33 @@ class Router implements RouterInterface
     public function __construct()
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+
         $this->routes = array();
     }
 
-    /**
-     * @param string            $pathPattern
-     * @param EndpointInterface $endpoint
-     */
-    public function route($pathPattern, EndpointInterface $endpoint)
+    public function route($path, EndpointInterface $endpoint)
     {
-        $this->typeCheck->route(func_get_args());
+        $this->typeCheck->routeExecutor(func_get_args());
+
+        foreach ($endpoint->routes($path) as $route) {
+            list($requestMethod, $pathPattern, $executor) = $route;
+            $this->routeExecutor($requestMethod, $pathPattern, $executor);
+        }
+    }
+
+    /**
+     * @param string            $requestMethod
+     * @param string            $pathPattern
+     * @param ExecutorInterface $executor
+     */
+    public function routeExecutor($requestMethod, $pathPattern, ExecutorInterface $executor)
+    {
+        $this->typeCheck->routeExecutor(func_get_args());
 
         list($regex, $names) = $this->compilePathPattern($pathPattern);
 
         $this->routes[] = array(
+            $requestMethod,
             $regex,
             $names,
             $endpoint
@@ -41,21 +53,21 @@ class Router implements RouterInterface
         $this->typeCheck->resolve(func_get_args());
 
         $method  = $request->getMethod();
-        $path    = urldecode($request->getPathInfo());
+        $path    = rtrim(urldecode($request->getPathInfo()), '/');
         $matches = array();
 
         foreach ($this->routes as $route) {
             list($regex, $names, $endpoint) = $route;
             if (preg_match($regex, $path, $matches)) {
                 $parameters = new Map;
-                foreach ($names as $index => $name) {
-                    $parameters->set($name, $matches[$index + 1]);
+                foreach ($matches as $index => $value) {
+                    if ($index > 0) {
+                        $parameters->set($names[$index - 1], $value);
+                    }
                 }
 
-                $match = new RouteMatch($endpoint, $parameters);
-
-                if ($endpoint->accepts($match)) {
-                    return $match;
+                if ($endpoint->accepts($request, $parameters)) {
+                    return new RouteMatch($endpoint, $parameters);
                 }
             }
         }

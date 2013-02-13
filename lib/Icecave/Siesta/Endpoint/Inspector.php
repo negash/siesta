@@ -2,7 +2,7 @@
 namespace Icecave\Siesta\Endpoint;
 
 use Icecave\Siesta\TypeCheck\TypeCheck;
-use InvalidArgumentException;
+use LogicException;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -32,11 +32,13 @@ class Inspector
         $delete = $this->getMethod($endpoint, 'delete');
 
         if (null === $index) {
-            throw new InvalidArgumentException($endpoint->getShortName() . '::index() does not exist.');
+            throw new LogicException($endpoint->getShortName() . '::index() does not exist.');
         }
 
         list($routingParameters, $indexOptions) = $this->inspectIndexMethod($index);
-        $identityParameters = $this->inspectGetMethod($routingParameters, $get);
+        $identityParameters = $this->inspectMethod($get, $routingParameters, false);
+        $postParameters = $this->inspectMethod($post, $routingParameters, true);
+        $putParameters = $this->inspectMethod($put, array_merge($routingParameters, $identityParameters), true);
 
         return new Signature(
             null !== $get,
@@ -45,7 +47,9 @@ class Inspector
             null !== $delete,
             $routingParameters,
             $identityParameters,
-            $indexOptions
+            $indexOptions,
+            $postParameters,
+            $putParameters
         );
     }
 
@@ -61,11 +65,12 @@ class Inspector
         $routingParameters = array();
         $indexOptions = array();
 
-        foreach ($method->getParameters() as $index => $parameter) {
+        foreach ($method->getParameters() as $index => $reflectionParameter) {
+            $parameter = new Parameter($reflectionParameter->getName(), !$reflectionParameter->isOptional());
             if ($index < $numRequired) {
-                $routingParameters[$parameter->getName()] = !$parameter->isOptional();
+                $routingParameters[] = $parameter;
             } else {
-                $indexOptions[] = $parameter->getName();
+                $indexOptions[] = $parameter;
             }
         }
 
@@ -73,31 +78,90 @@ class Inspector
     }
 
     /**
-     * @param array $routingParameters
-     * @param ReflectionMethod|null $method
+     * @param ReflectionMethod|null $method                  The method to inspect.
+     * @param array                 $matchParameters         An array of parameters that must be present as the left-most parameters of the method.
+     * @param boolean               $allowOptionalParameters True if any remaining parameters may be optional.
      */
-    protected function inspectGetMethod(array $routingParameters, ReflectionMethod $method = null)
+    protected function inspectMethod(ReflectionMethod $method = null, array $matchParameters, $allowOptionalParameters = true)
     {
-        $this->typeCheck->inspectGetMethod(func_get_args());
+        $this->typeCheck->inspectMethod(func_get_args());
 
-        $identityParameters = array();
-
-        if ($method) {
-            foreach ($method->getParameters() as $parameter) {
-                $identityParameters[] = $parameter->getName();
-            }
-            
-            
-            
-            if ($identityParameters) 
+        // Nothing to inspect ...
+        if (null === $method) {
+            return array();
         }
 
-        return $identityParameters;
+        $parameters = $this->matchParameters($method, $matchParameters);
+        $result = array();
+
+        foreach ($parameters as $parameter) {
+            if ($parameter->isOptional() && !$allowOptionalParameters) {
+                throw new LogicException(
+                    sprintf(
+                        'Parameter "%s" of %s::%s() must not be optional.',
+                        $parameter->getName(),
+                        $method->getDeclaringClass()->getShortName(),
+                        $method->getName()
+                    )
+                );
+            }
+
+            $result[] = new Parameter(
+                $parameter->getName(),
+                !$parameter->isOptional()
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param ReflectionMethod $method
+     * @param array            $matchParameters
+     *
+     * @return array
+     */
+    protected function matchParameters(ReflectionMethod $method, array $matchParameters)
+    {
+        $this->typeCheck->matchParameters(func_get_args());
+
+        $parameters = $method->getParameters();
+        $numParameters = count($parameters);
+        $numMatchParameters = count($matchParameters);
+
+        if ($numParameters < $numMatchParameters) {
+            throw new LogicException(
+                sprintf(
+                    '%s::%s() must have at least %d parameter(s).',
+                    $method->getDeclaringClass()->getShortName(),
+                    $method->getName(),
+                    $numMatchParameters
+                )
+            );
+        }
+
+        foreach ($matchParameters as $index => $matchParameter) {
+            $parameter = $parameters[$index];
+
+            if ($parameter->getName() !== $matchParameter->name()) {
+                throw new LogicException(
+                    sprintf(
+                        'Parameter #%d of %s::%s() must be named "%s".',
+                        $index + 1,
+                        $method->getDeclaringClass()->getShortName(),
+                        $method->getName(),
+                        $matchParameter->name()
+                    )
+                );
+            }
+        }
+
+        return array_slice($parameters, $numMatchParameters);
     }
 
     /**
      * @param ReflectionClass $endpoint
-     * @param string $method
+     * @param string          $method
      */
     protected function getMethod(ReflectionClass $endpoint, $method)
     {
@@ -110,9 +174,9 @@ class Inspector
         $method = $endpoint->getMethod($method);
 
         if ($method->isStatic()) {
-            throw new InvalidArgumentException($endpoint->getShortName() . '::' . $method . '() must not be static.');
+            throw new LogicException($endpoint->getShortName() . '::' . $method->getName() . '() must not be static.');
         } elseif (!$method->isPublic()) {
-            throw new InvalidArgumentException($endpoint->getShortName() . '::' . $method . '() must be public.');
+            throw new LogicException($endpoint->getShortName() . '::' . $method->getName() . '() must be public.');
         } else {
             return $method;
         }

@@ -16,7 +16,7 @@ class Validator
 
     /**
      * @param ReflectionClass $endpoint
-     * @param Signature $signature
+     * @param Signature       $signature
      */
     public function validate(ReflectionClass $endpoint, Signature $signature)
     {

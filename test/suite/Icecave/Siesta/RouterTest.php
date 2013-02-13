@@ -1,11 +1,7 @@
 <?php
 namespace Icecave\Siesta;
 
-use Eloquent\Liberator\Liberator;
-use Icecave\Collections\Map;
 use PHPUnit_Framework_TestCase;
-use Phake;
-use Symfony\Component\HttpFoundation\Request;
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {

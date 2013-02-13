@@ -9,15 +9,15 @@ use Icecave\Siesta\TypeCheck\TypeCheck;
 class Signature
 {
     /**
-     * @param boolean                   $hasGetMethod       True if the endpoint supports provides the HTTP GET method; otherwise, false.
-     * @param boolean                   $hasPostMethod      True if the endpoint supports provides the HTTP POST method; otherwise, false.
-     * @param boolean                   $hasPutMethod       True if the endpoint supports provides the HTTP PUT method; otherwise, false.
-     * @param boolean                   $hasDeleteMethod    True if the endpoint supports provides the HTTP DELETE method; otherwise, false.
-     * @param array<string, boolean>    $routingParameters  A map of the parameters common to all methods to a boolean indicating whether or not the parameter is a required.
-     * @param array<string>             $identityParameters The names parameters required to unique identify a resource (ie, id, name, etc).
-     * @param array<string>             $indexOptions       The names of optional parameters to the endpoint's index method.
-     * @param array<string, boolean>    $postParameters     A map of POST parameter names to a boolean indicating whether or not the parameter is a required.
-     * @param array<string, boolean>    $putParameters      A map of PUT parameter names to a boolean indicating whether or not the parameter is a required.
+     * @param boolean          $hasGetMethod       True if the endpoint supports provides the HTTP GET method; otherwise, false.
+     * @param boolean          $hasPostMethod      True if the endpoint supports provides the HTTP POST method; otherwise, false.
+     * @param boolean          $hasPutMethod       True if the endpoint supports provides the HTTP PUT method; otherwise, false.
+     * @param boolean          $hasDeleteMethod    True if the endpoint supports provides the HTTP DELETE method; otherwise, false.
+     * @param array<Parameter> $routingParameters  The required to route to the endpoint (and hence common to all methods).
+     * @param array<Parameter> $identityParameters The parameters used to identify a resource.
+     * @param array<Parameter> $indexOptions       Optional parameters that may be passed to index.
+     * @param array<Parameter> $postParameters     Parameters for the POST method.
+     * @param array<Parameter> $putParameters      Parameters for the PUT method.
      */
     public function __construct(
         $hasGetMethod = false,
@@ -84,7 +84,7 @@ class Signature
     }
 
     /**
-     * @return array<string, boolean>
+     * @return array<Parameter>
      */
     public function routingParameters()
     {
@@ -94,7 +94,7 @@ class Signature
     }
 
     /**
-     * @return array<string>
+     * @return array<Parameter>
      */
     public function identityParameters()
     {
@@ -104,7 +104,7 @@ class Signature
     }
 
     /**
-     * @return array<string, boolean>
+     * @return array<Parameter>
      */
     public function indexOptions()
     {
@@ -114,7 +114,7 @@ class Signature
     }
 
     /**
-     * @return array<string, boolean>
+     * @return array<Parameter>
      */
     public function postParameters()
     {
@@ -124,7 +124,7 @@ class Signature
     }
 
     /**
-     * @return array<string, boolean>
+     * @return array<Parameter>
      */
     public function putParameters()
     {

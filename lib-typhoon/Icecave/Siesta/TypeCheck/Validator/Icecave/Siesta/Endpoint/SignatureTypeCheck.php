@@ -60,10 +60,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!\is_string($key)) {
-                        return false;
-                    }
-                    if (!\is_bool($subValue)) {
+                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
                         return false;
                     }
                 }
@@ -74,7 +71,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     'routingParameters',
                     4,
                     $arguments[4],
-                    'array<string, boolean>'
+                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
                 );
             }
         }
@@ -85,7 +82,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!\is_string($subValue)) {
+                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
                         return false;
                     }
                 }
@@ -96,7 +93,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     'identityParameters',
                     5,
                     $arguments[5],
-                    'array<string>'
+                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
                 );
             }
         }
@@ -107,7 +104,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!\is_string($subValue)) {
+                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
                         return false;
                     }
                 }
@@ -118,7 +115,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     'indexOptions',
                     6,
                     $arguments[6],
-                    'array<string>'
+                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
                 );
             }
         }
@@ -129,10 +126,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!\is_string($key)) {
-                        return false;
-                    }
-                    if (!\is_bool($subValue)) {
+                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
                         return false;
                     }
                 }
@@ -143,7 +137,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     'postParameters',
                     7,
                     $arguments[7],
-                    'array<string, boolean>'
+                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
                 );
             }
         }
@@ -154,10 +148,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!\is_string($key)) {
-                        return false;
-                    }
-                    if (!\is_bool($subValue)) {
+                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
                         return false;
                     }
                 }
@@ -168,7 +159,7 @@ class SignatureTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     'putParameters',
                     8,
                     $arguments[8],
-                    'array<string, boolean>'
+                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
                 );
             }
         }

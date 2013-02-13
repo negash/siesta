@@ -30,11 +30,40 @@ class InspectorTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         }
     }
 
-    public function inspectGetMethod(array $arguments)
+    public function inspectMethod(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 1) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('method', 0, 'ReflectionMethod|null');
+            }
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('matchParameters', 1, 'array');
+        } elseif ($argumentCount > 3) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        }
+        if ($argumentCount > 2) {
+            $value = $arguments[2];
+            if (!\is_bool($value)) {
+                throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
+                    'allowOptionalParameters',
+                    2,
+                    $arguments[2],
+                    'boolean'
+                );
+            }
+        }
+    }
+
+    public function matchParameters(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('method', 0, 'ReflectionMethod');
+            }
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('matchParameters', 1, 'array');
+        } elseif ($argumentCount > 2) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
     }
 

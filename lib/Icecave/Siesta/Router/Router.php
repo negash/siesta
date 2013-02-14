@@ -1,79 +1,91 @@
 <?php
 namespace Icecave\Siesta\Router;
 
-use Icecave\Siesta\Endpoint\Inspector;
+use Icecave\Collections\Set;
 use Icecave\Siesta\TypeCheck\TypeCheck;
+use InvalidArgumentException;
 
-class Router
+class Router implements RouterInterface
 {
     /**
-     * @param Inspector|null      $inspector
-     * @param RouteCompiler|null  $routeCompiler
-     * @param RouteValidator|null $routeValidator
+     * @param RouteCompiler|null $routeCompiler
      */
-    public function __construct(
-        Inspector $inspector = null,
-        RouteCompiler $routeCompiler = null,
-        RouteValidator $routeValidator = null
-    ) {
+    public function __construct(RouteCompiler $routeCompiler = null) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-
-        if (null === $inspector) {
-            $inspector = new Inspector;
-        }
 
         if (null === $routeCompiler) {
             $routeCompiler = new RouteCompiler;
         }
 
-        $this->inspector = $inspector;
         $this->routeCompiler = $routeCompiler;
         $this->routes = new Set(
             null,
-            function (Route $route) {
+            function (RouteInterface $route) {
                 return $route->identity();
             }
         );
     }
 
     /**
-     * @param string  $path
-     * @param object  $endpoint
-     * @param boolean $replace
+     * @param string $path
+     *
+     * @return RouteMatch|null
      */
-    public function mount($path, $endpoint, $replace = false)
+    public function resolve($path)
     {
-        $this->typeCheck->mount(func_get_args());
+        $this->typeCheck->resolve(func_get_args());
 
-        $signature = $this->inspector->inspect($endpoint);
-        $route = $this->routeCompiler->compile($path);
-
-        $this->routeValidator->validate($route, $signature);
-
-        if (!$replace && $this->routes->contains($route)) {
-            throw new InvalidArgumentException('There is already an endpoint mounted at "' . $path . '".');
+        foreach ($this->routes as $route) {
+            if ($match = $route->match($path)) {
+                return $match;
+            }
         }
 
-        $this->routes->add($route);
+        return null;
     }
 
     /**
-     * @param string $path
+     * @param string  $pathPattern
+     * @param object  $endpoint
+     * @param boolean $allowReplace
      *
-     * @return boolean
+     * @return RouteInterface
      */
-    public function unmount($path)
+    public function mount($pathPattern, $endpoint, $allowReplace = false)
+    {
+        $this->typeCheck->mount(func_get_args());
+
+        $route = $this->routeCompiler->compile($pathPattern, $endpoint);
+
+        if (!$allowReplace && $this->routes->contains($route)) {
+            throw new InvalidArgumentException('There is already an endpoint mounted at "' . $pathPattern . '".');
+        }
+
+        $this->routes->add($route);
+
+        return $route;
+    }
+
+    /**
+     * @param string $pathPattern
+     *
+     * @return RouteInterface|null
+     */
+    public function unmount($pathPattern)
     {
         $this->typeCheck->unmount(func_get_args());
 
-        $route = $this->routeCompiler->compile($path);
+        foreach ($this->routes as $route) {
+            if ($route->pathPattern() === $pathPattern) {
+                $this->routes->remove($route);
+                return $route;
+            }
+        }
 
-        return $this->routes->remove($route);
+        return null;
     }
 
     private $typeCheck;
-    private $inspector;
     private $routeCompiler;
-    private $routeValidator;
     private $routes;
 }

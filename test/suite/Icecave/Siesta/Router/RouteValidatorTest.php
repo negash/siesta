@@ -36,6 +36,22 @@ class RouteValidatorTest extends PHPUnit_Framework_TestCase
         $this->assertNull($this->_validator->validate($route, $signature));
     }
 
+    public function testValidateUnorderedRoutingParameter()
+    {
+        $route = new Route(
+            '/foo/bar',
+            '<regex>',
+            array(new Parameter('resource1'), new Parameter('resource2'))
+        );
+
+        $signature = new Signature(
+            true, true, true, true,
+            array(new Parameter('resource2'), new Parameter('resource1'))
+        );
+
+        $this->assertNull($this->_validator->validate($route, $signature));
+    }
+
     public function testValidateOptionalRoutingParameter()
     {
         $route = new Route(

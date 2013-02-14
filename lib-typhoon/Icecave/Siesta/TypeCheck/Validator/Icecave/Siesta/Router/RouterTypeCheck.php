@@ -6,8 +6,27 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 3) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        if ($argumentCount > 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function resolve(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
+        } elseif ($argumentCount > 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+        $value = $arguments[0];
+        if (!\is_string($value)) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'path',
+                0,
+                $arguments[0],
+                'string'
+            );
         }
     }
 
@@ -16,7 +35,7 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         $argumentCount = \count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
+                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
             }
             throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 1, 'object');
         } elseif ($argumentCount > 3) {
@@ -25,7 +44,7 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         $value = $arguments[0];
         if (!\is_string($value)) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'path',
+                'pathPattern',
                 0,
                 $arguments[0],
                 'string'
@@ -44,7 +63,7 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
             $value = $arguments[2];
             if (!\is_bool($value)) {
                 throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'replace',
+                    'allowReplace',
                     2,
                     $arguments[2],
                     'boolean'
@@ -57,14 +76,14 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'path',
+                'pathPattern',
                 0,
                 $arguments[0],
                 'string'

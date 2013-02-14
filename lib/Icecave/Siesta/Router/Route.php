@@ -4,7 +4,7 @@ namespace Icecave\Siesta\Router;
 use Icecave\Siesta\Endpoint\Parameter;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
-class Route
+class Route implements RouteInterface
 {
     /**
      * @param string           $pathPattern
@@ -46,6 +46,15 @@ class Route
         $this->typeCheck->pathPattern(func_get_args());
 
         return $this->pathPattern;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return RouteMatch|null
+     */
+    public function match($path)
+    {
     }
 
     /**

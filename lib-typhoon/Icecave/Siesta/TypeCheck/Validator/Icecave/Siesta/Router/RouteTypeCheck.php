@@ -92,6 +92,25 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         }
     }
 
+    public function match(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
+        } elseif ($argumentCount > 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+        $value = $arguments[0];
+        if (!\is_string($value)) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'path',
+                0,
+                $arguments[0],
+                'string'
+            );
+        }
+    }
+
     public function regexPattern(array $arguments)
     {
         if (\count($arguments) > 0) {

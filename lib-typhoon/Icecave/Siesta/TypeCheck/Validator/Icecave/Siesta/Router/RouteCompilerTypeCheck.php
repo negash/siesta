@@ -1,7 +1,7 @@
 <?php
-namespace Icecave\Siesta\TypeCheck\Validator\Icecave\Siesta;
+namespace Icecave\Siesta\TypeCheck\Validator\Icecave\Siesta\Router;
 
-class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
+class RouteCompilerTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
@@ -10,7 +10,7 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         }
     }
 
-    public function compilePathPattern(array $arguments)
+    public function compile(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {

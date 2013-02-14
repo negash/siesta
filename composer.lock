@@ -1,5 +1,5 @@
 {
-    "hash": "a08ec6a16948d664b97a6c59cc2166ed",
+    "hash": "ab0b248c0d543ececed64a4ead7459f2",
     "packages": [
         {
             "name": "symfony/http-foundation",
@@ -506,16 +506,16 @@
         },
         {
             "name": "icecave/archer",
-            "version": "dev-develop",
+            "version": "dev-release/0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/archer.git",
-                "reference": "391910cd88985edb8382e0b45b030e5449851ea7"
+                "reference": "499b3ca36c8bbaded0fbc4e0362a26b3c420536f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/archer/zipball/391910cd88985edb8382e0b45b030e5449851ea7",
-                "reference": "391910cd88985edb8382e0b45b030e5449851ea7",
+                "url": "https://api.github.com/repos/IcecaveStudios/archer/zipball/499b3ca36c8bbaded0fbc4e0362a26b3c420536f",
+                "reference": "499b3ca36c8bbaded0fbc4e0362a26b3c420536f",
                 "shasum": ""
             },
             "require": {
@@ -526,7 +526,7 @@
             "suggest": {
                 "ext-openssl": "OpenSSL is required to encrypt GitHub OAuth tokens for artifact publication."
             },
-            "time": "2013-02-12 08:04:44",
+            "time": "2013-02-13 22:43:11",
             "bin": [
                 "bin/archer",
                 "bin/woodhouse"

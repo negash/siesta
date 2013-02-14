@@ -1,9 +1,12 @@
 <?php
-namespace Icecave\Siesta;
+namespace Icecave\Siesta\Router;
 
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
-class Router
+/**
+ * Compiles path patterns into Route instances.
+ */
+class RouteCompiler
 {
     public function __construct()
     {
@@ -13,46 +16,42 @@ class Router
     /**
      * @param string $pathPattern
      *
-     * @return tuple<string, string> A 2-tuple containing the regex pattern and argument names.
+     * @return Route
      */
-    public function compilePathPattern($pathPattern)
+    public function compile($pathPattern)
     {
-        $this->typeCheck->compilePathPattern(func_get_args());
+        $this->typeCheck->compile(func_get_args());
 
         // Match wildcards:
-        //  - *
         //  - :name
         //  - :optionalName? (only at end of path)
         $atoms = preg_split(
-            '/(\*|:[a-z_]\w*|\/:[a-z_]\w*\?$)/i',
+            '/(:[a-z_]\w*|\/:[a-z_]\w*\?$)/i',
             rtrim($pathPattern, '/'),
             null,
             PREG_SPLIT_DELIM_CAPTURE
         );
 
         $regex = '';
-        $names = array();
+        $requiredNames = array();
+        $optionalNames = array();
 
         foreach ($atoms as $index => $atom) {
             // Not a wildcard ...
             if ($index % 2 === 0) {
                 $regex .= preg_quote($atom, '|');
-            // Positional wildcard ...
-            } elseif ('*' === $atom) {
-                $names[] = 'arg' . count($names);
-                $regex .= '([^/]+)';
             // Optional named wildcard ...
             } elseif ('/' === $atom[0]) {
-                $names[] = trim($atom, ':/?');
+                $optionalNames[] = trim($atom, ':/?');
                 $regex .= '(?:/([^/]+))?';
             // Required named wildcard ...
             } else {
-                $names[] = trim($atom, ':/?');
+                $requiredNames[] = trim($atom, ':/?');
                 $regex .= '([^/]+)';
             }
         }
 
-        return array('|^' . $regex . '$|', $names);
+        return array('|^' . $regex . '$|', $requiredNames, $optionalNames);
     }
 
     private $typeCheck;

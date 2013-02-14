@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-14 04:14:28
+  2013-02-14 04:43:30
 
  Summary: 
   Classes: 85.71% (6/7)
   Methods: 88.24% (30/34)
-  Lines:   84.68% (210/248)
+  Lines:   84.92% (214/252)
 
 \Icecave\Siesta\Endpoint::Inspector
   Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 92/ 92)
@@ -17,6 +17,6 @@ Code Coverage Report
 \Icecave\Siesta\Router::Route
   Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 20/ 20)
 \Icecave\Siesta\Router::RouteCompiler
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 22/ 22)
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 26/ 26)
 \Icecave\Siesta\Router::RouteValidator
   Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 39/ 39)

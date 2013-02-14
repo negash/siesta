@@ -12,5 +12,5 @@
 Available as [Composer](http://getcomposer.org) package [icecave/siesta](https://packagist.org/packages/icecave/siesta).
 
 [logo]: http://icecave.com.au/assets/img/project-icons/icon-siesta.png
-[status-icon]: http://icecave.com.au/siesta/artifacts/images/icecave/regular/build-status.png
-[coverage-icon]: http://icecave.com.au/siesta/artifacts/images/icecave/regular/coverage.png
+[status-icon]: https://raw.github.com/IcecaveStudios/siesta/gh-pages/artifacts/images/icecave/regular/build-status.png
+[coverage-icon]: https://raw.github.com/IcecaveStudios/siesta/gh-pages/artifacts/images/icecave/regular/coverage.png

@@ -1,5 +1,6 @@
 ![Siesta](http://icecave.com.au/assets/img/project-icons/icon-siesta.png)<br>&nbsp;&nbsp;
-[![Build Status](https://api.travis-ci.org/IcecaveStudios/siesta.png)](http://travis-ci.org/IcecaveStudios/siesta)
+[![Build Status](http://icecave.com.au/siesta/artifacts/images/icecave/regular/build-status.png)](http://travis-ci.org/IcecaveStudios/siesta)
+[![Test Coverage](http://icecave.com.au/siesta/artifacts/images/icecave/regular/coverage.png)](http://icecave.com.au/siesta/artifacts/tests/coverage)
 
 ---
 

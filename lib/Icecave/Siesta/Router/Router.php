@@ -1,8 +1,8 @@
 <?php
 namespace Icecave\Siesta\Router;
 
-use Icecave\Siesta\TypeCheck\TypeCheck;
 use Icecave\Siesta\Endpoint\Inspector;
+use Icecave\Siesta\TypeCheck\TypeCheck;
 
 class Router
 {

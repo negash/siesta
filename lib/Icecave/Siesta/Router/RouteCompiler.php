@@ -1,6 +1,7 @@
 <?php
 namespace Icecave\Siesta\Router;
 
+use Icecave\Siesta\Endpoint\Parameter;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
 /**
@@ -32,26 +33,31 @@ class RouteCompiler
             PREG_SPLIT_DELIM_CAPTURE
         );
 
-        $regex = '';
-        $requiredNames = array();
-        $optionalNames = array();
+        $regexPattern = '';
+        $routingParameters = array();
+        $identityParameters = array();
 
         foreach ($atoms as $index => $atom) {
             // Not a wildcard ...
             if ($index % 2 === 0) {
-                $regex .= preg_quote($atom, '|');
+                $regexPattern .= preg_quote($atom, '|');
             // Optional named wildcard ...
             } elseif ('/' === $atom[0]) {
-                $optionalNames[] = trim($atom, ':/?');
-                $regex .= '(?:/([^/]+))?';
+                $identityParameters[] = new Parameter(trim($atom, ':/?'), false);
+                $regexPattern .= '(?:/([^/]+))?';
             // Required named wildcard ...
             } else {
-                $requiredNames[] = trim($atom, ':/?');
-                $regex .= '([^/]+)';
+                $routingParameters[] = new Parameter(trim($atom, ':/?'));
+                $regexPattern .= '([^/]+)';
             }
         }
 
-        return array('|^' . $regex . '$|', $requiredNames, $optionalNames);
+        return new Route(
+            $pathPattern,
+            '|^' . $regexPattern . '$|',
+            $routingParameters,
+            $identityParameters
+        );
     }
 
     private $typeCheck;

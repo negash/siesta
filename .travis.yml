@@ -1,9 +1,10 @@
 #
-# This is a fall-back Travis CI configuration for
-# use when no GitHub OAuth token is available.
+# This is the default Travis CI configuration.
 #
-# It uses --prefer-source when fetching composer dependencies
-# to avoid IP-based API throttling (ie, it uses clone instead of downloading a zip).
+# It uses a GitHub OAuth token when fetching composer dependencies
+# to avoid IP-based API throttling.
+#
+# It also allows publication of artifacts via an additional build.
 #
 language: php
 
@@ -13,8 +14,15 @@ php:
   - 5.4
   - 5.5
 
+env:
+  global:
+    - ARCHER_PUBLISH_VERSION=5.4
+    - secure: "UQAa+KoJSq+dee43Ov6ZelS+hMcAgaDBXxiIQwDMfiZ4FvPTZSQeT0voUx4E6mNk8+zYlMnzWXOeHlDUwUMJfhQ8jP5ZDl+0kQVx2Y+nud7Ra6ZSUzZiXEqCXIyXMlr0ZVvUUePmLANvSMFJwHOScIKpBmFiNgR0Wv6e8NhGTBA="
+
+before_install:
+    - ./.travis.before-install
 install:
-    - composer install --dev --prefer-source --no-interaction
+    - composer install --dev --prefer-dist --no-interaction
 script:
     - ./vendor/bin/archer travis:build
 

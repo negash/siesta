@@ -20,11 +20,11 @@ env:
     - secure: "UQAa+KoJSq+dee43Ov6ZelS+hMcAgaDBXxiIQwDMfiZ4FvPTZSQeT0voUx4E6mNk8+zYlMnzWXOeHlDUwUMJfhQ8jP5ZDl+0kQVx2Y+nud7Ra6ZSUzZiXEqCXIyXMlr0ZVvUUePmLANvSMFJwHOScIKpBmFiNgR0Wv6e8NhGTBA="
 
 before_install:
-    - ./.travis.before-install
+  - ./.travis.before-install
 install:
-    - composer install --dev --prefer-dist --no-interaction
+  - composer install --dev --prefer-dist --no-progress --no-interaction
 script:
-    - ./vendor/bin/archer travis:build
+  - ./vendor/bin/archer travis:build
 
 matrix:
   # PHP 5.5 is still in alpha, so ignore build failures.

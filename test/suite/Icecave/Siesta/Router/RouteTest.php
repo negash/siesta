@@ -3,17 +3,20 @@ namespace Icecave\Siesta\Router;
 
 use Icecave\Siesta\Endpoint\Parameter;
 use PHPUnit_Framework_TestCase;
+use stdClass;
 
 class RouteTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->_routingParameters = array(new Parameter('routing'));
-        $this->_identityParameters = array(new Parameter('identity'));
+        $this->_endpoint = new stdClass;
+        $this->_routingParameters = array('routing');
+        $this->_identityParameters = array('identity');
 
         $this->_route = new Route(
             '/foo/:bar',
             '|^/foo/([^/]+)$|',
+            $this->_endpoint,
             $this->_routingParameters,
             $this->_identityParameters
         );
@@ -21,11 +24,11 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
     public function testIdentity()
     {
-        $route = new Route('/foo/:bar', '|^/foo/([^/]+)$|');
+        $route = new Route('/foo/:bar', '|^/foo/([^/]+)$|', $this->_endpoint);
         $this->assertTrue(is_integer($route->identity()));
         $this->assertSame($this->_route->identity(), $route->identity());
 
-        $route = new Route('/spam/:doom', '|^/spam/([^/]+)$|');
+        $route = new Route('/spam/:doom', '|^/spam/([^/]+)$|', $this->_endpoint);
         $this->assertTrue(is_integer($route->identity()));
         $this->assertNotSame($this->_route->identity(), $route->identity());
     }
@@ -38,6 +41,11 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function testRegexPattern()
     {
         $this->assertSame('|^/foo/([^/]+)$|', $this->_route->regexPattern());
+    }
+
+    public function testEndpoint()
+    {
+        $this->assertSame($this->_endpoint, $this->_route->endpoint());
     }
 
     public function testRoutingParameters()

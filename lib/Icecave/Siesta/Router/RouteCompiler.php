@@ -1,7 +1,6 @@
 <?php
 namespace Icecave\Siesta\Router;
 
-use Icecave\Siesta\Endpoint\Parameter;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
 /**
@@ -16,10 +15,11 @@ class RouteCompiler
 
     /**
      * @param string $pathPattern
+     * @param object $endpoint
      *
      * @return Route
      */
-    public function compile($pathPattern)
+    public function compile($pathPattern, $endpoint)
     {
         $this->typeCheck->compile(func_get_args());
 
@@ -43,11 +43,11 @@ class RouteCompiler
                 $regexPattern .= preg_quote($atom, '|');
             // Optional named wildcard ...
             } elseif ('/' === $atom[0]) {
-                $identityParameters[] = new Parameter(trim($atom, ':/?'), false);
+                $identityParameters[] = trim($atom, ':/?');
                 $regexPattern .= '(?:/([^/]+))?';
             // Required named wildcard ...
             } else {
-                $routingParameters[] = new Parameter(trim($atom, ':/?'));
+                $routingParameters[] = trim($atom, ':/?');
                 $regexPattern .= '([^/]+)';
             }
         }
@@ -55,6 +55,7 @@ class RouteCompiler
         return new Route(
             $pathPattern,
             '|^' . $regexPattern . '$|',
+            $endpoint,
             $routingParameters,
             $identityParameters
         );

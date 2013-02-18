@@ -6,13 +6,16 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 2) {
+        if ($argumentCount < 3) {
             if ($argumentCount < 1) {
                 throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
             }
-            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('regexPattern', 1, 'string');
-        } elseif ($argumentCount > 4) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(4, $arguments[4]);
+            if ($argumentCount < 2) {
+                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('regexPattern', 1, 'string');
+            }
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 2, 'object');
+        } elseif ($argumentCount > 5) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(5, $arguments[5]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
@@ -32,27 +35,14 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                 'string'
             );
         }
-        if ($argumentCount > 2) {
-            $value = $arguments[2];
-            $check = function ($value) {
-                if (!\is_array($value)) {
-                    return false;
-                }
-                foreach ($value as $key => $subValue) {
-                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
-                        return false;
-                    }
-                }
-                return true;
-            };
-            if (!$check($arguments[2])) {
-                throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'routingParameters',
-                    2,
-                    $arguments[2],
-                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
-                );
-            }
+        $value = $arguments[2];
+        if (!\is_object($value)) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'endpoint',
+                2,
+                $arguments[2],
+                'object'
+            );
         }
         if ($argumentCount > 3) {
             $value = $arguments[3];
@@ -61,7 +51,7 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!$subValue instanceof \Icecave\Siesta\Endpoint\Parameter) {
+                    if (!\is_string($subValue)) {
                         return false;
                     }
                 }
@@ -69,10 +59,32 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
             };
             if (!$check($arguments[3])) {
                 throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'identityParameters',
+                    'routingParameters',
                     3,
                     $arguments[3],
-                    'array<Icecave\\Siesta\\Endpoint\\Parameter>'
+                    'array<string>'
+                );
+            }
+        }
+        if ($argumentCount > 4) {
+            $value = $arguments[4];
+            $check = function ($value) {
+                if (!\is_array($value)) {
+                    return false;
+                }
+                foreach ($value as $key => $subValue) {
+                    if (!\is_string($subValue)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            if (!$check($arguments[4])) {
+                throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
+                    'identityParameters',
+                    4,
+                    $arguments[4],
+                    'array<string>'
                 );
             }
         }
@@ -108,6 +120,13 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                 $arguments[0],
                 'string'
             );
+        }
+    }
+
+    public function endpoint(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 

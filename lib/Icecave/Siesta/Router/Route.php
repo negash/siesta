@@ -1,23 +1,24 @@
 <?php
 namespace Icecave\Siesta\Router;
 
-use Icecave\Siesta\Endpoint\Parameter;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
 class Route implements RouteInterface
 {
     /**
-     * @param string           $pathPattern
-     * @param string           $regexPattern
-     * @param array<Parameter> $routingParameters
-     * @param array<Parameter> $identityParameters
+     * @param string        $pathPattern
+     * @param string        $regexPattern
+     * @param object        $endpoint
+     * @param array<string> $routingParameters
+     * @param array<string> $identityParameters
      */
-    public function __construct($pathPattern, $regexPattern, array $routingParameters = array(), array $identityParameters = array())
+    public function __construct($pathPattern, $regexPattern, $endpoint, array $routingParameters = array(), array $identityParameters = array())
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         $this->pathPattern = $pathPattern;
         $this->regexPattern = $regexPattern;
+        $this->endpoint = $endpoint;
         $this->routingParameters = $routingParameters;
         $this->identityParameters = $identityParameters;
 
@@ -55,6 +56,43 @@ class Route implements RouteInterface
      */
     public function match($path)
     {
+        $this->typeCheck->match(func_get_args());
+
+        $matches = array();
+
+        if (!preg_match($this->regexPattern(), $path, $matches)) {
+            return null;
+        }
+
+        $routingArguments = array();
+        foreach ($this->routingParameters() as $index => $name) {
+            $routingArguments[$name] = $matches[$index + 1];
+        }
+
+        $identityArguments = array();
+        $offset = count($this->routingParameters()) + 1;
+
+        if (count($matches) > $offset) {
+            foreach ($this->identityParameters() as $index => $name) {
+                $identityArguments[$name] = $matches[$offset + $index];
+            }
+        }
+
+        return new RouteMatch(
+            $this,
+            $routingArguments,
+            $identityArguments
+        );
+    }
+
+    /**
+     * @return object
+     */
+    public function endpoint()
+    {
+        $this->typeCheck->endpoint(func_get_args());
+
+        return $this->endpoint;
     }
 
     /**
@@ -68,7 +106,7 @@ class Route implements RouteInterface
     }
 
     /**
-     * @return array<Parameter>
+     * @return array<string>
      */
     public function routingParameters()
     {
@@ -78,7 +116,7 @@ class Route implements RouteInterface
     }
 
     /**
-     * @return array<Parameter>
+     * @return array<string>
      */
     public function identityParameters()
     {
@@ -91,6 +129,7 @@ class Route implements RouteInterface
     private $typeCheck;
     private $pathPattern;
     private $regexPattern;
+    private $endpoint;
     private $routingParameters;
     private $identityParameters;
 }

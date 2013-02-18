@@ -7,7 +7,7 @@ interface RouteInterface
      * @return integer
      */
     public function identity();
-    
+
     /**
      * @return string
      */
@@ -19,4 +19,9 @@ interface RouteInterface
      * @return RouteMatch|null
      */
     public function match($path);
+
+    /**
+     * @return object
+     */
+    public function endpoint();
 }

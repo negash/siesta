@@ -1,49 +1,23 @@
 TAP version 13
-ok 1 - Icecave\Siesta\Endpoint\InspectorTest::testInspect with data set #0 ('Icecave\\Siesta\\TestFixtures\\Endpoint\\IndexOnlyEndpoint', Icecave\Siesta\Endpoint\Signature)
-ok 2 - Icecave\Siesta\Endpoint\InspectorTest::testInspect with data set #1 ('Icecave\\Siesta\\TestFixtures\\Endpoint\\IndexParamsEndpoint', Icecave\Siesta\Endpoint\Signature)
-ok 3 - Icecave\Siesta\Endpoint\InspectorTest::testInspect with data set #2 ('Icecave\\Siesta\\TestFixtures\\Endpoint\\IndexOptionsEndpoint', Icecave\Siesta\Endpoint\Signature)
-ok 4 - Icecave\Siesta\Endpoint\InspectorTest::testInspect with data set #3 ('Icecave\\Siesta\\TestFixtures\\Endpoint\\CompleteEndpoint', Icecave\Siesta\Endpoint\Signature)
-ok 5 - Icecave\Siesta\Endpoint\InspectorTest::testInspectEmptyFailure
-ok 6 - Icecave\Siesta\Endpoint\InspectorTest::testInspectOptionalIdentityParameterFailure
-ok 7 - Icecave\Siesta\Endpoint\InspectorTest::testInspectMissingRouteParameterFailure
-ok 8 - Icecave\Siesta\Endpoint\InspectorTest::testInspectMisnamedRouteParameterFailure
-ok 9 - Icecave\Siesta\Endpoint\InspectorTest::testInspectStaticMethodFailure
-ok 10 - Icecave\Siesta\Endpoint\InspectorTest::testInspectNonPublicMethodFailure
-ok 11 - Icecave\Siesta\Endpoint\ParameterTest::testParameter
-ok 12 - Icecave\Siesta\Endpoint\SignatureTest::testConstructorDefaults
-ok 13 - Icecave\Siesta\Endpoint\SignatureTest::testConstructor
-ok 14 - Icecave\Siesta\Endpoint\SignatureTest::testHasGetMethod
-ok 15 - Icecave\Siesta\Endpoint\SignatureTest::testHasPostMethod
-ok 16 - Icecave\Siesta\Endpoint\SignatureTest::testHasPutMethod
-ok 17 - Icecave\Siesta\Endpoint\SignatureTest::testHasDeleteMethod
-ok 18 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
-ok 19 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
-ok 20 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
-ok 21 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
-ok 22 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
-ok 23 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
-ok 24 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
-ok 25 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
-ok 26 - Icecave\Siesta\Router\RouteTest::testIdentity
-ok 27 - Icecave\Siesta\Router\RouteTest::testPathPattern
-ok 28 - Icecave\Siesta\Router\RouteTest::testRegexPattern
-ok 29 - Icecave\Siesta\Router\RouteTest::testRoutingParameters
-ok 30 - Icecave\Siesta\Router\RouteTest::testIdentityParameters
-ok 31 - Icecave\Siesta\Router\RouteValidatorTest::testValidateEmpty
-ok 32 - Icecave\Siesta\Router\RouteValidatorTest::testValidateRoutingParameter
-ok 33 - Icecave\Siesta\Router\RouteValidatorTest::testValidateUnorderedRoutingParameter
-ok 34 - Icecave\Siesta\Router\RouteValidatorTest::testValidateOptionalRoutingParameter
-ok 35 - Icecave\Siesta\Router\RouteValidatorTest::testValidateMissingRoutingParameterFailure
-ok 36 - Icecave\Siesta\Router\RouteValidatorTest::testValidateExtraRoutingParameterFailure
-ok 37 - Icecave\Siesta\Router\RouteValidatorTest::testValidateIdentityParameter
-ok 38 - Icecave\Siesta\Router\RouteValidatorTest::testValidateOptionalIdentityParameter
-ok 39 - Icecave\Siesta\Router\RouteValidatorTest::testValidateMissingIdentityParameterFailure
-ok 40 - Icecave\Siesta\Router\RouteValidatorTest::testValidateExtraIdentityParameterFailure
-ok 41 - Icecave\Siesta\Router\RouterTest::testConstructorDefaults
-ok 42 - Icecave\Siesta\Router\RouterTest::testResolve
-ok 43 - Icecave\Siesta\Router\RouterTest::testMount
-ok 44 - Icecave\Siesta\Router\RouterTest::testMountFailure
-ok 45 - Icecave\Siesta\Router\RouterTest::testMountReplace
-ok 46 - Icecave\Siesta\Router\RouterTest::testUnmount
-ok 47 - Icecave\Siesta\Router\RouterTest::testUnmountFailure
-1..47
+ok 1 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
+ok 2 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
+ok 3 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
+ok 4 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
+ok 5 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
+ok 6 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
+ok 7 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
+ok 8 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
+ok 9 - Icecave\Siesta\Router\RouteTest::testIdentity
+ok 10 - Icecave\Siesta\Router\RouteTest::testPathPattern
+ok 11 - Icecave\Siesta\Router\RouteTest::testRegexPattern
+ok 12 - Icecave\Siesta\Router\RouteTest::testEndpoint
+ok 13 - Icecave\Siesta\Router\RouteTest::testRoutingParameters
+ok 14 - Icecave\Siesta\Router\RouteTest::testIdentityParameters
+ok 15 - Icecave\Siesta\Router\RouterTest::testConstructorDefaults
+ok 16 - Icecave\Siesta\Router\RouterTest::testResolve
+ok 17 - Icecave\Siesta\Router\RouterTest::testMount
+ok 18 - Icecave\Siesta\Router\RouterTest::testMountFailure
+ok 19 - Icecave\Siesta\Router\RouterTest::testMountReplace
+ok 20 - Icecave\Siesta\Router\RouterTest::testUnmount
+ok 21 - Icecave\Siesta\Router\RouterTest::testUnmountFailure
+1..21

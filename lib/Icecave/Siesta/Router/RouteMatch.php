@@ -1,30 +1,25 @@
 <?php
 namespace Icecave\Siesta\Router;
 
+use Icecave\Siesta\Endpoint\EndpointInterface;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
 class RouteMatch
 {
     /**
      * @param RouteInterface        $route
-     * @param array<string, string> $routingArguments
-     * @param array<string, string> $identityArguments
+     * @param EndpointInterface     $endpoint
+     * @param array<string, string> $arguments
      */
-    public function __construct(
-        RouteInterface $route,
-        array $routingArguments,
-        array $identityArguments
-    ) {
+    public function __construct(RouteInterface $route, EndpointInterface $endpoint, array $arguments)
+    {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         $this->route = $route;
-        $this->routingArguments = $routingArguments;
-        $this->identityArguments = $identityArguments;
+        $this->endpoint = $endpoint;
+        $this->arguments = $arguments;
     }
 
-    /**
-     * @return Route
-     */
     public function route()
     {
         $this->typeCheck->route(func_get_args());
@@ -32,28 +27,22 @@ class RouteMatch
         return $this->route;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function routingArguments()
+    public function endpoint()
     {
-        $this->typeCheck->routingArguments(func_get_args());
+        $this->typeCheck->endpoint(func_get_args());
 
-        return $this->routingArguments;
+        return $this->endpoint;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function identityArguments()
+    public function arguments()
     {
-        $this->typeCheck->identityArguments(func_get_args());
+        $this->typeCheck->arguments(func_get_args());
 
-        return $this->identityArguments;
+        return $this->arguments;
     }
 
     private $typeCheck;
     private $route;
-    private $routingArguments;
-    private $identityArguments;
+    private $endpoint;
+    private $arguments;
 }

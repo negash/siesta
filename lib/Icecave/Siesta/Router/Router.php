@@ -3,36 +3,28 @@ namespace Icecave\Siesta\Router;
 
 use Icecave\Collections\Map;
 use Icecave\Siesta\TypeCheck\TypeCheck;
-use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Request;
 
 class Router implements RouterInterface
 {
-    /**
-     * @param PatternCompiler|null $patternCompiler
-     */
-    public function __construct(PatternCompiler $patternCompiler = null)
+    public function __construct()
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
-        if (null === $patternCompiler) {
-            $patternCompiler = new PatternCompiler;
-        }
-
-        $this->patternCompiler = $patternCompiler;
         $this->routes = new Map;
     }
 
     /**
-     * @param string $path
+     * @param Request $request
      *
      * @return RouteMatch|null
      */
-    public function resolve($path)
+    public function resolve(Request $request)
     {
         $this->typeCheck->resolve(func_get_args());
 
         foreach ($this->routes as $route) {
-            if ($match = $route->match($path)) {
+            if ($match = $route->resolve($request)) {
                 return $match;
             }
         }
@@ -41,49 +33,36 @@ class Router implements RouterInterface
     }
 
     /**
-     * @param string  $pathPattern
-     * @param object  $endpoint
-     *
-     * @return RouteInterface
+     * @param RouteInterface $route
      */
-    public function mount($pathPattern, $endpoint)
+    public function addRoute(RouteInterface $route)
     {
-        $this->typeCheck->mount(func_get_args());
+        $this->typeCheck->addRoute(func_get_args());
 
-        list($regexPattern, $routingParameters, $identityParameters) = $this->patternCompiler->compile($pathPattern);
-
-        $route = new Route(
-            $pathPattern,
-            $regexPattern,
-            $endpoint,
-            $routingParameters,
-            $identityParameters
-        );
-
-        $this->routes->set($route->identity(), $route);
-
-        return $route;
+        $this->routes[$route->identity()] = $route;
     }
 
     /**
-     * @param string $pathPattern
+     * @param RouteInterface $route
      *
-     * @return RouteInterface|null
+     * @return boolean
      */
-    public function unmount($pathPattern)
+    public function removeRoute(RouteInterface $route)
     {
-        $this->typeCheck->unmount(func_get_args());
+        $this->typeCheck->removeRoute(func_get_args());
 
-        foreach ($this->routes as $identity => $route) {
-            if ($route->pathPattern() === $pathPattern) {
-                return $this->routes->remove($identity);
-            }
+        $value = null;
+        if (!$this->routes->tryGet($route->identity(), $value)) {
+            return false;
+        } elseif ($value !== $route) {
+            return false;
         }
 
-        return null;
+        $this->routes->remove($route->identity());
+
+        return true;
     }
 
     private $typeCheck;
-    private $patternCompiler;
     private $routes;
 }

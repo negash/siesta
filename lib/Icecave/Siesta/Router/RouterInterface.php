@@ -1,27 +1,26 @@
 <?php
 namespace Icecave\Siesta\Router;
 
+use Symfony\Component\HttpFoundation\Request;
+
 interface RouterInterface
 {
     /**
-     * @param string $path
+     * @param Request $request
      *
      * @return RouteMatch|null
      */
-    public function resolve($path);
+    public function resolve(Request $request);
 
     /**
-     * @param string  $pathPattern
-     * @param object  $endpoint
-     *
-     * @return RouteInterface
+     * @param RouteInterface $route
      */
-    public function mount($pathPattern, $endpoint);
+    public function addRoute(RouteInterface $route);
 
     /**
-     * @param string $pathPattern
+     * @param RouteInterface $route
      *
-     * @return RouteInterface|null
+     * @return boolean
      */
-    public function unmount($pathPattern);
+    public function removeRoute(RouteInterface $route);
 }

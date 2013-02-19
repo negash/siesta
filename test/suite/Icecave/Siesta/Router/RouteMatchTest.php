@@ -9,9 +9,9 @@ class RouteMatchTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->_route = Phake::mock(__NAMESPACE__ . '\RouteInterface');
-        $this->_routingArguments = array('routing' => 'foo');
-        $this->_identityArguments =  array('identity' => 'bar');
-        $this->_match = new RouteMatch($this->_route, $this->_routingArguments, $this->_identityArguments);
+        $this->_endpoint = Phake::mock('Icecave\Siesta\Endpoint\EndpointInterface');
+        $this->_arguments = array('foo' => 'bar');
+        $this->_match = new RouteMatch($this->_route, $this->_endpoint, $this->_arguments);
     }
 
     public function testRoute()
@@ -19,13 +19,13 @@ class RouteMatchTest extends PHPUnit_Framework_TestCase
         $this->assertSame($this->_route, $this->_match->route());
     }
 
-    public function testRoutingArguments()
+    public function testEndpoint()
     {
-        $this->assertSame($this->_routingArguments, $this->_match->routingArguments());
+        $this->assertSame($this->_endpoint, $this->_match->endpoint());
     }
 
-    public function testIdentityArguments()
+    public function testArguments()
     {
-        $this->assertSame($this->_identityArguments, $this->_match->identityArguments());
+        $this->assertSame($this->_arguments, $this->_match->arguments());
     }
 }

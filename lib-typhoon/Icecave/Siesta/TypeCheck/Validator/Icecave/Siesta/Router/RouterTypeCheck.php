@@ -5,9 +5,8 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
-        $argumentCount = \count($arguments);
-        if ($argumentCount > 1) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        if (\count($arguments) > 0) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -15,68 +14,29 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('request', 0, 'Symfony\\Component\\HttpFoundation\\Request');
         } elseif ($argumentCount > 1) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'path',
-                0,
-                $arguments[0],
-                'string'
-            );
-        }
     }
 
-    public function mount(array $arguments)
-    {
-        $argumentCount = \count($arguments);
-        if ($argumentCount < 2) {
-            if ($argumentCount < 1) {
-                throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
-            }
-            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 1, 'object');
-        } elseif ($argumentCount > 2) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'pathPattern',
-                0,
-                $arguments[0],
-                'string'
-            );
-        }
-        $value = $arguments[1];
-        if (!\is_object($value)) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'endpoint',
-                1,
-                $arguments[1],
-                'object'
-            );
-        }
-    }
-
-    public function unmount(array $arguments)
+    public function addRoute(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('route', 0, 'Icecave\\Siesta\\Router\\RouteInterface');
         } elseif ($argumentCount > 1) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'pathPattern',
-                0,
-                $arguments[0],
-                'string'
-            );
+    }
+
+    public function removeRoute(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('route', 0, 'Icecave\\Siesta\\Router\\RouteInterface');
+        } elseif ($argumentCount > 1) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
     }
 

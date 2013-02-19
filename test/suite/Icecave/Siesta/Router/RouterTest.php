@@ -4,82 +4,105 @@ namespace Icecave\Siesta\Router;
 use Eloquent\Liberator\Liberator;
 use PHPUnit_Framework_TestCase;
 use Phake;
-use stdClass;
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
+        $this->_request = Phake::mock('Symfony\Component\HttpFoundation\Request');
+        $this->_route1 = Phake::mock(__NAMESPACE__ . '\RouteInterface');
+        $this->_route2 = Phake::mock(__NAMESPACE__ . '\RouteInterface');
+        $this->_match = Phake::mock(__NAMESPACE__ . '\RouteMatch');
+
+        Phake::when($this->_route1)
+            ->identity()
+            ->thenReturn('r1');
+
+        Phake::when($this->_route2)
+            ->identity()
+            ->thenReturn('r2');
+
         $this->_router = new Router;
         $this->_routes = Liberator::liberate($this->_router)->routes;
     }
 
-    public function testConstructorDefaults()
-    {
-        $router = new Router;
-        $router = Liberator::liberate($router);
-
-        $this->assertInstanceOf(__NAMESPACE__ . '\PatternCompiler', $router->patternCompiler);
-    }
-
     public function testResolve()
     {
-        $endpoint1 = new stdClass;
-        $endpoint2 = new stdClass;
+        Phake::when($this->_route2)
+            ->resolve(Phake::anyParameters())
+            ->thenReturn($this->_match);
 
-        $this->_router->mount('/path/to/1', $endpoint1);
-        $this->_router->mount('/path/to/2', $endpoint2);
+        $this->_router->addRoute($this->_route1);
+        $this->_router->addRoute($this->_route2);
 
-        $match = $this->_router->resolve('/path/to/2');
+        $result = $this->_router->resolve($this->_request);
 
-        $this->assertInstanceOf(__NAMESPACE__ . '\RouteMatch', $match);
-        $this->assertSame($endpoint2, $match->route()->endpoint());
+        Phake::verify($this->_route2)->resolve($this->_request);
+
+        $this->assertSame($this->_match, $result);
     }
 
     public function testResolveFailure()
     {
-        $match = $this->_router->resolve('/path/to/nothing');
+        $this->_router->addRoute($this->_route1);
+        $this->_router->addRoute($this->_route2);
 
-        $this->assertNull($match);
+        $result = $this->_router->resolve($this->_request);
+
+        Phake::verify($this->_route1)->resolve($this->_request);
+        Phake::verify($this->_route2)->resolve($this->_request);
+
+        $this->assertNull($result);
     }
 
-
-    public function testMountReplace()
+    public function testAddRoute()
     {
-        $endpoint1 = new stdClass;
-        $endpoint1->name = 1;
-        $endpoint2 = new stdClass;
-        $endpoint2->name = 2;
+        $this->_router->addRoute($this->_route1);
+        $this->_router->addRoute($this->_route2);
 
-        $this->_router->mount('/path/to/endpoint', $endpoint1);
-        $this->_router->mount('/path/to/endpoint', $endpoint2);
-
-        $match = $this->_router->resolve('/path/to/endpoint');
-
-        $this->assertInstanceOf(__NAMESPACE__ . '\RouteMatch', $match);
-        $this->assertSame($endpoint2, $match->route()->endpoint());
+        $this->assertSame(2, $this->_routes->size());
+        $this->assertSame($this->_route1, $this->_routes['r1']);
+        $this->assertSame($this->_route2, $this->_routes['r2']);
     }
 
-    public function testUnmount()
+    public function testAddRouteReplace()
     {
-        $endpoint = new stdClass;
+        Phake::when($this->_route2)
+            ->identity()
+            ->thenReturn('r1');
 
-        $mountRoute = $this->_router->mount('/path/to/endpoint', $endpoint);
+        $this->_router->addRoute($this->_route1);
+        $this->_router->addRoute($this->_route2);
 
-        $unmountRoute = $this->_router->unmount('/path/to/endpoint');
+        $this->assertSame(1, $this->_routes->size());
+        $this->assertSame($this->_route2, $this->_routes['r1']);
+    }
 
-        $this->assertSame($mountRoute, $unmountRoute);
+    public function testRemoveRoute()
+    {
+        $this->_router->addRoute($this->_route1);
+        $result = $this->_router->removeRoute($this->_route1);
+
+        $this->assertTrue($result);
         $this->assertTrue($this->_routes->isEmpty());
     }
 
-    public function testUnmountFailure()
+    public function testRemoveRouteFailure()
     {
-        $endpoint = new stdClass;
+        $result = $this->_router->removeRoute($this->_route1);
 
-        $this->_router->mount('/path/to/endpoint', $endpoint);
+        $this->assertFalse($result);
+    }
 
-        $route = $this->_router->unmount('/path/to/different/endpoint');
+    public function testRemoveRouteFailureNotIdentical()
+    {
+        Phake::when($this->_route2)
+            ->identity()
+            ->thenReturn('r1');
 
-        $this->assertNull($route);
+        $result = $this->_router->addRoute($this->_route1);
+        $result = $this->_router->removeRoute($this->_route2);
+
+        $this->assertFalse($result);
     }
 }

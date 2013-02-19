@@ -1,5 +1,5 @@
 {
-    "hash": "5749ff8820c16a1453307b256bc004af",
+    "hash": "175303126157612bee5f721285aef788",
     "packages": [
         {
             "name": "icecave/collections",
@@ -65,24 +65,23 @@
         },
         {
             "name": "icecave/evoke",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/evoke.git",
-                "reference": "2e6200181a941a1237ae23756ea3985684a3dce8"
+                "reference": "bb3c12a7167bd6587decadbb72cfbc3fb5abaff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/evoke/zipball/2e6200181a941a1237ae23756ea3985684a3dce8",
-                "reference": "2e6200181a941a1237ae23756ea3985684a3dce8",
+                "url": "https://api.github.com/repos/IcecaveStudios/evoke/zipball/bb3c12a7167bd6587decadbb72cfbc3fb5abaff7",
+                "reference": "bb3c12a7167bd6587decadbb72cfbc3fb5abaff7",
                 "shasum": ""
             },
             "require-dev": {
-                "eloquent/liberator": ">=1.0,<2.0",
                 "eloquent/typhoon": ">=0.8,<1.0",
                 "icecave/archer": ">=0.1,<1.0"
             },
-            "time": "2013-02-18 00:02:44",
+            "time": "2013-02-18 13:02:31",
             "type": "library",
             "extra": {
                 "typhoon": {
@@ -107,7 +106,7 @@
                     "email": "james.harris@icecave.com.au"
                 }
             ],
-            "description": "Named parameter wrapper for PHP callables.",
+            "description": "Invoke PHP callables using a collection of named parameters.",
             "homepage": "https://github.com/IcecaveStudios/evoke",
             "keywords": [
                 "arguments",

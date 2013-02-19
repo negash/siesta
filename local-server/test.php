@@ -1,60 +1,49 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
 
-/**
- * An endpoint 
- */
-class CompanyWorkerEndpoint
+use Icecave\Collections\Vector;
+use Icecave\Siesta\Api;
+use Icecave\Siesta\Router\Router;
+use Icecave\Siesta\Router\PathRoute;
+use Icecave\Siesta\Endpoint\Endpoint;
+use Icecave\Siesta\Encoding\JsonEncoding;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class EP
 {
-    /**
-     * The index method serves get requests that do not specify and ID.
-     */
-    public function index($company)
+    public function index()
     {
-        return Domain\Worker::findAllByCompany($company);
+        return array(
+            array('id' => 10),
+            array('id' => 20),
+            array('id' => 30),
+        );
     }
 
-    /**
-     * The get method serves get requests that DO specify an ID
-     */
-    public function get($company, $id)
+    public function get($id)
     {
-        return Domain\Worker::findByCompanyAndId($companty, $id);
-    }
-
-    /**
-     * Post parameters are unrolled into regular method parameters.
-     */
-    public function post($company, $name, $description)
-    {
-        $worker = new Domain\Worker;
-        $worker->setCompany($company);
-        $worker->setName($name);
-        $worker->setDescription($description);
-        $worker->save();
-        return $worker;
-    }
-
-    /**
-     * As are put parameters.
-     */
-    public function put($company, $id, $name, $description)
-    {
-        $worker = Domain\Worker::findByCompanyAndId($companty, $id);
-        if ($worker) {
-            $worker->setName($name);
-            $worker->setDescription($description);
-        } else {
-            throw new ResourceNotFoundException;
-        }
-    }
-
-    public function delete($company, $id)
-    {
-        $worker = Domain\Worker::findByCompanyAndId($companty, $id);
-        $worker->delete();
+        return array('id' => intval($id));
     }
 }
 
-// The variable names (:company and :id) are matched against the parameter names from the methods on the endpoint.
-// The ? indicates that :id is an optional parameter
-$router->route('/companies/:company/workers/:id?', new CompanyWorkerEndpoint);
+class MyApi extends Api
+{
+    public function configure(Router $router, Vector $encodingOptions)
+    {
+        $encodingOptions->pushBack(new JsonEncoding);
+
+        // $this->route('/things/:id?', new EP);
+
+        $router->addRoute(
+            new PathRoute('/things/:id?', '|^/things(/(?P<id>.+))?$|', new EndPoint(new EP, array('id')))
+        );
+    }
+}
+
+$request = Request::createFromGlobals();
+$response = new Response;
+
+$api = new MyApi;
+$api->process($request, $response);
+$response->send();

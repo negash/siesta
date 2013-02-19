@@ -1,12 +1,12 @@
 TAP version 13
-ok 1 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
-ok 2 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
-ok 3 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
-ok 4 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
-ok 5 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
-ok 6 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
-ok 7 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
-ok 8 - Icecave\Siesta\Router\RouterCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
+ok 1 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
+ok 2 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
+ok 3 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
+ok 4 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
+ok 5 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
+ok 6 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
+ok 7 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
+ok 8 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
 ok 9 - Icecave\Siesta\Router\RouteMatchTest::testRoute
 ok 10 - Icecave\Siesta\Router\RouteMatchTest::testRoutingArguments
 ok 11 - Icecave\Siesta\Router\RouteMatchTest::testIdentityArguments
@@ -22,9 +22,7 @@ ok 20 - Icecave\Siesta\Router\RouteTest::testMatchFailure
 ok 21 - Icecave\Siesta\Router\RouterTest::testConstructorDefaults
 ok 22 - Icecave\Siesta\Router\RouterTest::testResolve
 ok 23 - Icecave\Siesta\Router\RouterTest::testResolveFailure
-ok 24 - Icecave\Siesta\Router\RouterTest::testMount
-ok 25 - Icecave\Siesta\Router\RouterTest::testMountFailure
-ok 26 - Icecave\Siesta\Router\RouterTest::testMountReplace
-ok 27 - Icecave\Siesta\Router\RouterTest::testUnmount
-ok 28 - Icecave\Siesta\Router\RouterTest::testUnmountFailure
-1..28
+ok 24 - Icecave\Siesta\Router\RouterTest::testMountReplace
+ok 25 - Icecave\Siesta\Router\RouterTest::testUnmount
+ok 26 - Icecave\Siesta\Router\RouterTest::testUnmountFailure
+1..26

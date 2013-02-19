@@ -58,6 +58,13 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertSame($routeMatch, $match);
     }
 
+    public function testResolveFailure()
+    {
+        $match = $this->_router->resolve('/path/to/nothing');
+
+        $this->assertNull($match);
+    }
+
     public function testMount()
     {
         $endpoint = new stdClass;

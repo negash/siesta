@@ -104,6 +104,13 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
         }
     }
 
+    public function endpoint(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
     public function match(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -120,13 +127,6 @@ class RouteTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                 $arguments[0],
                 'string'
             );
-        }
-    }
-
-    public function endpoint(array $arguments)
-    {
-        if (\count($arguments) > 0) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 

@@ -6,12 +6,12 @@ use Icecave\Siesta\TypeCheck\TypeCheck;
 class RouteMatch
 {
     /**
-     * @param Route                 $route
+     * @param RouteInterface        $route
      * @param array<string, string> $routingArguments
      * @param array<string, string> $identityArguments
      */
     public function __construct(
-        Route $route,
+        RouteInterface $route,
         array $routingArguments,
         array $identityArguments
     ) {

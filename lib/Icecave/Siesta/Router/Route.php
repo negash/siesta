@@ -21,12 +21,6 @@ class Route implements RouteInterface
         $this->endpoint = $endpoint;
         $this->routingParameters = $routingParameters;
         $this->identityParameters = $identityParameters;
-
-        if (array_key_exists($this->regexPattern, self::$identities)) {
-            $this->identity = self::$identities[$this->regexPattern];
-        } else {
-            $this->identity = self::$identities[$this->regexPattern] = count(self::$identities) + 1;
-        }
     }
 
     /**
@@ -36,7 +30,7 @@ class Route implements RouteInterface
     {
         $this->typeCheck->identity(func_get_args());
 
-        return $this->identity;
+        return $this->regexPattern;
     }
 
     /**
@@ -125,7 +119,6 @@ class Route implements RouteInterface
         return $this->identityParameters;
     }
 
-    private static $identities = array();
     private $typeCheck;
     private $pathPattern;
     private $regexPattern;

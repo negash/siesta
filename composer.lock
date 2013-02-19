@@ -1,5 +1,5 @@
 {
-    "hash": "4078119fa5e24edf7b82c6dbd088305b",
+    "hash": "5749ff8820c16a1453307b256bc004af",
     "packages": [
         {
             "name": "icecave/collections",
@@ -604,16 +604,16 @@
         },
         {
             "name": "eloquent/typhoon",
-            "version": "0.8.0",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
-                "url": "git://github.com/eloquent/typhoon.git",
-                "reference": "0.8.0"
+                "url": "https://github.com/eloquent/typhoon.git",
+                "reference": "0.9.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/eloquent/typhoon/archive/0.8.0.zip",
-                "reference": "0.8.0",
+                "url": "https://api.github.com/repos/eloquent/typhoon/zipball/0.9.0",
+                "reference": "0.9.0",
                 "shasum": ""
             },
             "require": {
@@ -632,10 +632,9 @@
             "require-dev": {
                 "eloquent/liberator": ">=1.0,<2.0",
                 "ezzatron/phpunit-extensions": ">=1.0,<2.0",
-                "icecave/testing": ">=2.0,<3.0",
-                "icecave/woodhouse": "*"
+                "icecave/archer": ">=0.1,<1.0"
             },
-            "time": "2013-01-25 01:58:12",
+            "time": "2013-02-18 23:16:04",
             "bin": [
                 "bin/typhoon"
             ],

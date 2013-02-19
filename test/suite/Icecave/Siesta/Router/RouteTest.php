@@ -26,11 +26,9 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function testIdentity()
     {
         $route = new Route('/foo/:bar', $this->_regexPattern, $this->_endpoint);
-        $this->assertTrue(is_integer($route->identity()));
         $this->assertSame($this->_route->identity(), $route->identity());
 
         $route = new Route('/spam/:doom', '|^/spam/([^/]+)$|', $this->_endpoint);
-        $this->assertTrue(is_integer($route->identity()));
         $this->assertNotSame($this->_route->identity(), $route->identity());
     }
 

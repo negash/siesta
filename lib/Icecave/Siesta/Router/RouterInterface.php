@@ -13,11 +13,10 @@ interface RouterInterface
     /**
      * @param string  $pathPattern
      * @param object  $endpoint
-     * @param boolean $allowReplace
      *
      * @return RouteInterface
      */
-    public function mount($pathPattern, $endpoint, $allowReplace = false);
+    public function mount($pathPattern, $endpoint);
 
     /**
      * @param string $pathPattern

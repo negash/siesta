@@ -1,30 +1,25 @@
 <?php
 namespace Icecave\Siesta\Router;
 
-use Icecave\Collections\Set;
+use Icecave\Collections\Map;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use InvalidArgumentException;
 
 class Router implements RouterInterface
 {
     /**
-     * @param RouteCompiler|null $routeCompiler
+     * @param PatternCompiler|null $patternCompiler
      */
-    public function __construct(RouteCompiler $routeCompiler = null)
+    public function __construct(PatternCompiler $patternCompiler = null)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
-        if (null === $routeCompiler) {
-            $routeCompiler = new RouteCompiler;
+        if (null === $patternCompiler) {
+            $patternCompiler = new PatternCompiler;
         }
 
-        $this->routeCompiler = $routeCompiler;
-        $this->routes = new Set(
-            null,
-            function (RouteInterface $route) {
-                return $route->identity();
-            }
-        );
+        $this->patternCompiler = $patternCompiler;
+        $this->routes = new Map;
     }
 
     /**
@@ -48,21 +43,24 @@ class Router implements RouterInterface
     /**
      * @param string  $pathPattern
      * @param object  $endpoint
-     * @param boolean $allowReplace
      *
      * @return RouteInterface
      */
-    public function mount($pathPattern, $endpoint, $allowReplace = false)
+    public function mount($pathPattern, $endpoint)
     {
         $this->typeCheck->mount(func_get_args());
 
-        $route = $this->routeCompiler->compile($pathPattern, $endpoint);
+        list($regexPattern, $routingParameters, $identityParameters) = $this->patternCompiler->compile($pathPattern);
 
-        if (!$allowReplace && $this->routes->contains($route)) {
-            throw new InvalidArgumentException('There is already an endpoint mounted at "' . $pathPattern . '".');
-        }
+        $route = new Route(
+            $pathPattern,
+            $regexPattern,
+            $endpoint,
+            $routingParameters,
+            $identityParameters
+        );
 
-        $this->routes->add($route);
+        $this->routes->set($route->identity(), $route);
 
         return $route;
     }
@@ -76,11 +74,9 @@ class Router implements RouterInterface
     {
         $this->typeCheck->unmount(func_get_args());
 
-        foreach ($this->routes as $route) {
+        foreach ($this->routes as $identity => $route) {
             if ($route->pathPattern() === $pathPattern) {
-                $this->routes->remove($route);
-
-                return $route;
+                return $this->routes->remove($identity);
             }
         }
 
@@ -88,6 +84,6 @@ class Router implements RouterInterface
     }
 
     private $typeCheck;
-    private $routeCompiler;
+    private $patternCompiler;
     private $routes;
 }

@@ -4,9 +4,9 @@ namespace Icecave\Siesta\Router;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 
 /**
- * Compiles path patterns into Route instances.
+ * Compiles path patterns into regex patterns.
  */
-class RouteCompiler
+class PatternCompiler
 {
     public function __construct()
     {
@@ -15,11 +15,10 @@ class RouteCompiler
 
     /**
      * @param string $pathPattern
-     * @param object $endpoint
      *
      * @return Route
      */
-    public function compile($pathPattern, $endpoint)
+    public function compile($pathPattern)
     {
         $this->typeCheck->compile(func_get_args());
 
@@ -52,12 +51,10 @@ class RouteCompiler
             }
         }
 
-        return new Route(
-            $pathPattern,
+        return array(
             '|^' . $regexPattern . '$|',
-            $endpoint,
             $routingParameters,
-            $identityParameters
+            $identityParameters,
         );
     }
 

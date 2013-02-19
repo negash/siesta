@@ -2,13 +2,12 @@
 namespace Icecave\Siesta\Router;
 
 use PHPUnit_Framework_TestCase;
-use stdClass;
 
-class RouterCompilerTest extends PHPUnit_Framework_TestCase
+class PatternCompilerTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->_compiler = new RouteCompiler;
+        $this->_compiler = new PatternCompiler;
     }
 
     /**
@@ -16,16 +15,11 @@ class RouterCompilerTest extends PHPUnit_Framework_TestCase
      */
     public function testCompile($pathPattern, $regexPattern, $expectedRoutingParameters, $expectedIdentityParameters)
     {
-        $endpoint = new stdClass;
+        $result = $this->_compiler->compile($pathPattern);
 
-        $route = $this->_compiler->compile($pathPattern, $endpoint);
+        $expected = array($regexPattern, $expectedRoutingParameters, $expectedIdentityParameters);
 
-        $this->assertInstanceOf(__NAMESPACE__ . '\Route', $route);
-        $this->assertSame($pathPattern, $route->pathPattern());
-        $this->assertSame($regexPattern, $route->regexPattern());
-        $this->assertSame($endpoint, $route->endpoint());
-        $this->assertSame($expectedRoutingParameters, $route->routingParameters());
-        $this->assertSame($expectedIdentityParameters, $route->identityParameters());
+        $this->assertSame($expected, $result);
     }
 
     public function pathPatterns()

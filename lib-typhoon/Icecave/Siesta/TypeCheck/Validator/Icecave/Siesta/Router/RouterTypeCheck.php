@@ -38,8 +38,8 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                 throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('pathPattern', 0, 'string');
             }
             throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('endpoint', 1, 'object');
-        } elseif ($argumentCount > 3) {
-            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        } elseif ($argumentCount > 2) {
+            throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
@@ -58,17 +58,6 @@ class RouterTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValidator
                 $arguments[1],
                 'object'
             );
-        }
-        if ($argumentCount > 2) {
-            $value = $arguments[2];
-            if (!\is_bool($value)) {
-                throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'allowReplace',
-                    2,
-                    $arguments[2],
-                    'boolean'
-                );
-            }
         }
     }
 

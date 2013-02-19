@@ -4,7 +4,7 @@ namespace Icecave\Siesta\Router;
 interface RouteInterface
 {
     /**
-     * @return integer
+     * @return string
      */
     public function identity();
 

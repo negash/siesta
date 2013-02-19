@@ -1,7 +1,6 @@
 <?php
 namespace Icecave\Siesta\Router;
 
-use Icecave\Siesta\Endpoint\Parameter;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -9,13 +8,15 @@ class RouteTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
+        $this->_pathPattern = '/foo/:routing/:identity?';
+        $this->_regexPattern = '|^/foo/([^/]+)(?:/([^/]+))?$|';
         $this->_endpoint = new stdClass;
         $this->_routingParameters = array('routing');
         $this->_identityParameters = array('identity');
 
         $this->_route = new Route(
-            '/foo/:bar',
-            '|^/foo/([^/]+)$|',
+            $this->_pathPattern,
+            $this->_regexPattern,
             $this->_endpoint,
             $this->_routingParameters,
             $this->_identityParameters
@@ -24,7 +25,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
     public function testIdentity()
     {
-        $route = new Route('/foo/:bar', '|^/foo/([^/]+)$|', $this->_endpoint);
+        $route = new Route('/foo/:bar', $this->_regexPattern, $this->_endpoint);
         $this->assertTrue(is_integer($route->identity()));
         $this->assertSame($this->_route->identity(), $route->identity());
 
@@ -35,12 +36,12 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
     public function testPathPattern()
     {
-        $this->assertSame('/foo/:bar', $this->_route->pathPattern());
+        $this->assertSame($this->_pathPattern, $this->_route->pathPattern());
     }
 
     public function testRegexPattern()
     {
-        $this->assertSame('|^/foo/([^/]+)$|', $this->_route->regexPattern());
+        $this->assertSame($this->_regexPattern, $this->_route->regexPattern());
     }
 
     public function testEndpoint()
@@ -56,5 +57,30 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function testIdentityParameters()
     {
         $this->assertSame($this->_identityParameters, $this->_route->identityParameters());
+    }
+
+    public function testMatch()
+    {
+        $match = $this->_route->match('/foo/quux');
+
+        $expected = new RouteMatch($this->_route, array('routing' => 'quux'), array());
+
+        $this->assertEquals($expected, $match);
+    }
+
+    public function testMatchWithIdentity()
+    {
+        $match = $this->_route->match('/foo/quux/28');
+
+        $expected = new RouteMatch($this->_route, array('routing' => 'quux'), array('identity' => '28'));
+
+        $this->assertEquals($expected, $match);
+    }
+
+    public function testMatchFailure()
+    {
+        $match = $this->_route->match('/bar/quux/28');
+
+        $this->assertNull($match);
     }
 }

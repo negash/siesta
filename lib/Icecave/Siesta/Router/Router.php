@@ -10,7 +10,8 @@ class Router implements RouterInterface
     /**
      * @param RouteCompiler|null $routeCompiler
      */
-    public function __construct(RouteCompiler $routeCompiler = null) {
+    public function __construct(RouteCompiler $routeCompiler = null)
+    {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $routeCompiler) {
@@ -78,6 +79,7 @@ class Router implements RouterInterface
         foreach ($this->routes as $route) {
             if ($route->pathPattern() === $pathPattern) {
                 $this->routes->remove($route);
+
                 return $route;
             }
         }

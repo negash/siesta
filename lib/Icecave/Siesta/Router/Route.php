@@ -50,6 +50,16 @@ class Route implements RouteInterface
     }
 
     /**
+     * @return object
+     */
+    public function endpoint()
+    {
+        $this->typeCheck->endpoint(func_get_args());
+
+        return $this->endpoint;
+    }
+
+    /**
      * @param string $path
      *
      * @return RouteMatch|null
@@ -83,16 +93,6 @@ class Route implements RouteInterface
             $routingArguments,
             $identityArguments
         );
-    }
-
-    /**
-     * @return object
-     */
-    public function endpoint()
-    {
-        $this->typeCheck->endpoint(func_get_args());
-
-        return $this->endpoint;
     }
 
     /**

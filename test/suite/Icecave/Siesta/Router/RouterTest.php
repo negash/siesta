@@ -14,7 +14,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->_route1 = Phake::mock(__NAMESPACE__ . '\RouteInterface');
         $this->_route2 = Phake::mock(__NAMESPACE__ . '\RouteInterface');
         $this->_router = new Router($this->_compiler);
-        
+
         Phake::when($this->_compiler)
             ->compile(Phake::anyParameters())
             ->thenReturn($this->_route1)

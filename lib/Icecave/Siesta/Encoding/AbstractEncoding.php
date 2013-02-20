@@ -61,7 +61,7 @@ abstract class AbstractEncoding implements EncodingInterface
         switch ($request->getMethod()) {
             case 'POST':
             case 'PUT':
-                return $this->decodeRequest($request->getContent());
+                return $this->decodePayload($request->getContent());
         }
 
         return null;

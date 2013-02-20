@@ -2,11 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../test/lib/Icecave/Siesta/TestFixtures/EndpointImplementation.php';
 
-use Icecave\Collections\Vector;
 use Icecave\Siesta\Api;
-use Icecave\Siesta\Router\Router;
-use Icecave\Siesta\Router\PathRoute;
-use Icecave\Siesta\Endpoint\Endpoint;
 use Icecave\Siesta\Encoding\JsonEncoding;
 use Icecave\Siesta\TestFixtures\EndpointImplementation;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,8 +42,6 @@ class MyApi extends Api
     private $filename;
     private $endpoint;
 }
-
-
 
 // Create API and serve request ...
 $request = Request::createFromGlobals();

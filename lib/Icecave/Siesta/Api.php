@@ -3,6 +3,7 @@ namespace Icecave\Siesta;
 
 use Icecave\Collections\Vector;
 use Icecave\Siesta\Encoding\EncodingSelector;
+use Icecave\Siesta\Encoding\EncodingSelectorInterface;
 use Icecave\Siesta\Router\Router;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class Api
 {
     /**
-     * @param Router|null           $router
-     * @param EncodingSelector|null $encodingSelector
+     * @param Router|null                    $router
+     * @param EncodingSelectorInterface|null $encodingSelector
      */
-    public function __construct(Router $router = null, EncodingSelector $encodingSelector = null)
+    public function __construct(Router $router = null, EncodingSelectorInterface $encodingSelector = null)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 

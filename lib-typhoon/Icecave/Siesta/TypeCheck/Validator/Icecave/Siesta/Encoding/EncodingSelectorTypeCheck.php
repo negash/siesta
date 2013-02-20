@@ -10,13 +10,13 @@ class EncodingSelectorTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValida
             if ($argumentCount < 1) {
                 throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('request', 0, 'Symfony\\Component\\HttpFoundation\\Request');
             }
-            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('encodingOptions', 1, 'Icecave\\Collections\\Vector<Icecave\\Siesta\\Encoding\\EncodingInterface>');
+            throw new \Icecave\Siesta\TypeCheck\Exception\MissingArgumentException('encodingOptions', 1, 'array<Icecave\\Siesta\\Encoding\\EncodingInterface>');
         } elseif ($argumentCount > 2) {
             throw new \Icecave\Siesta\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
         $value = $arguments[1];
         $check = function ($value) {
-            if (!$value instanceof \Traversable) {
+            if (!\is_array($value)) {
                 return false;
             }
             foreach ($value as $key => $subValue) {
@@ -31,7 +31,7 @@ class EncodingSelectorTypeCheck extends \Icecave\Siesta\TypeCheck\AbstractValida
                 'encodingOptions',
                 1,
                 $arguments[1],
-                'Icecave\\Collections\\Vector<Icecave\\Siesta\\Encoding\\EncodingInterface>'
+                'array<Icecave\\Siesta\\Encoding\\EncodingInterface>'
             );
         }
     }

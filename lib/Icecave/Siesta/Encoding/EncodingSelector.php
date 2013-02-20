@@ -1,20 +1,19 @@
 <?php
 namespace Icecave\Siesta\Encoding;
 
-use Icecave\Collections\Vector;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Chooses the best encoding to use based on the HTTP request.
  */
-class EncodingSelector
+class EncodingSelector implements EncodingSelectorInterface
 {
     /**
-     * @param Request                   $request
-     * @param Vector<EncodingInterface> $encodingOptions
+     * @param Request                  $request
+     * @param array<EncodingInterface> $encodingOptions
      */
-    public function select(Request $request, Vector $encodingOptions)
+    public function select(Request $request, array $encodingOptions)
     {
         TypeCheck::get(__CLASS__)->select(func_get_args());
 
@@ -44,6 +43,6 @@ class EncodingSelector
         }
 
         // Fall back to the default encoding option ...
-        return $encodingOptions->front();
+        return reset($encodingOptions);
     }
 }

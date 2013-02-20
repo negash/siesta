@@ -1,15 +1,17 @@
 
 
 Code Coverage Report 
-  2013-02-20 04:34:43
+  2013-02-20 06:08:19
 
  Summary: 
-  Classes: 55.56% (5/9)
-  Methods: 65.52% (19/29)
-  Lines:   45.79% (98/214)
+  Classes: 66.67% (6/9)
+  Methods: 68.97% (20/29)
+  Lines:   55.77% (116/208)
 
 \Icecave\Siesta\Encoding::AbstractEncoding
   Methods:  75.00% ( 6/ 8)   Lines: 100.00% ( 24/ 24)
+\Icecave\Siesta\Encoding::EncodingSelector
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 18/ 18)
 \Icecave\Siesta\Router::PathRoute
   Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 18/ 18)
 \Icecave\Siesta\Router::PatternCompiler

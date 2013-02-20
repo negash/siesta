@@ -21,14 +21,14 @@ ok 19 - Icecave\Siesta\Endpoint\EndpointTest::testProcessUnsupportedMethod
 ok 20 - Icecave\Siesta\Router\PathRouteTest::testIdentity
 ok 21 - Icecave\Siesta\Router\PathRouteTest::testResolve
 ok 22 - Icecave\Siesta\Router\PathRouteTest::testResolveFailure
-ok 23 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
-ok 24 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
-ok 25 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
-ok 26 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
-ok 27 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
-ok 28 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
-ok 29 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
-ok 30 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
+ok 23 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "simple" ('/path/to/resource', '/path/to/resource', '|^/path/to/resource$|', array())
+ok 24 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '/path/to/resource', '|^/path/to/resource$|', array())
+ok 25 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 1" ('/path/:foo', '/path/*', '|^/path/(?P<foo>[^/]+)$|', array())
+ok 26 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '/path/*/*', '|^/path/(?P<foo>[^/]+)/(?P<bar>[^/]+)$|', array())
+ok 27 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '/path/?', '|^/path(?:/(?P<foo>[^/]+))?$|', array('foo'))
+ok 28 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '/path/*/?', '|^/path/(?P<foo>[^/]+)(?:/(?P<bar>[^/]+))?$|', array('bar'))
+ok 29 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '/path/*/resource', '|^/path/(?P<foo>[^/]+)/resource$|', array())
+ok 30 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '/path/*/.', '|^/path/(?P<foo>[^/]+)/\\.$|', array())
 ok 31 - Icecave\Siesta\Router\RouteMatchTest::testRoute
 ok 32 - Icecave\Siesta\Router\RouteMatchTest::testEndpoint
 ok 33 - Icecave\Siesta\Router\RouteMatchTest::testArguments

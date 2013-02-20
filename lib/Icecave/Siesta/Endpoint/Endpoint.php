@@ -1,9 +1,11 @@
 <?php
 namespace Icecave\Siesta\Endpoint;
 
+use BadMethodCallException;
 use Icecave\Evoke\Invoker;
 use Icecave\Siesta\Router\RouteMatch;
 use Icecave\Siesta\TypeCheck\TypeCheck;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 
 class Endpoint implements EndpointInterface
@@ -49,9 +51,10 @@ class Endpoint implements EndpointInterface
             $arguments = array_merge($payload, $routeMatch->arguments());
         }
 
-        if (!method_exists($this->implementation, $methodName)) {
-            // TODO fix!
-            throw new \Exception('Does not support ' . $methodName . '().');
+        $reflector = new ReflectionClass($this->implementation);
+
+        if (!$reflector->hasMethod($methodName)) {
+            throw new BadMethodCallException($reflector->getShortName() . ' does not support "' . $methodName . '" request.');
         }
 
         return $this->invoker->invoke(

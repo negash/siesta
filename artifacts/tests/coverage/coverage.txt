@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-20 08:32:32
+  2013-02-20 08:33:25
 
  Summary: 
   Classes: 88.89% (8/9)
-  Methods: 89.66% (26/29)
-  Lines:   83.94% (162/193)
+  Methods: 78.79% (26/33)
+  Lines:   72.00% (162/225)
 
 \Icecave\Siesta\Encoding::AbstractEncoding
   Methods:  75.00% ( 6/ 8)   Lines: 100.00% ( 24/ 24)

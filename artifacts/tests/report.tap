@@ -10,25 +10,28 @@ ok 8 - Icecave\Siesta\Encoding\EncodingSelectorTest::testSelectByContentType
 ok 9 - Icecave\Siesta\Encoding\EncodingSelectorTest::testSelectByFileExtension
 ok 10 - Icecave\Siesta\Encoding\EncodingSelectorTest::testSelectByRequest
 ok 11 - Icecave\Siesta\Encoding\EncodingSelectorTest::testSelectDefaultFallback
-ok 12 - Icecave\Siesta\Router\PathRouteTest::testIdentity
-ok 13 - Icecave\Siesta\Router\PathRouteTest::testResolve
-ok 14 - Icecave\Siesta\Router\PathRouteTest::testResolveFailure
-ok 15 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
-ok 16 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
-ok 17 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
-ok 18 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
-ok 19 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
-ok 20 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
-ok 21 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
-ok 22 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
-ok 23 - Icecave\Siesta\Router\RouteMatchTest::testRoute
-ok 24 - Icecave\Siesta\Router\RouteMatchTest::testEndpoint
-ok 25 - Icecave\Siesta\Router\RouteMatchTest::testArguments
-ok 26 - Icecave\Siesta\Router\RouterTest::testResolve
-ok 27 - Icecave\Siesta\Router\RouterTest::testResolveFailure
-ok 28 - Icecave\Siesta\Router\RouterTest::testAddRoute
-ok 29 - Icecave\Siesta\Router\RouterTest::testAddRouteReplace
-ok 30 - Icecave\Siesta\Router\RouterTest::testRemoveRoute
-ok 31 - Icecave\Siesta\Router\RouterTest::testRemoveRouteFailure
-ok 32 - Icecave\Siesta\Router\RouterTest::testRemoveRouteFailureNotIdentical
-1..32
+ok 12 - Icecave\Siesta\Encoding\JsonEncodingTest::testConstructor
+ok 13 - Icecave\Siesta\Encoding\JsonEncodingTest::testDecodePayload
+ok 14 - Icecave\Siesta\Encoding\JsonEncodingTest::testEncodePayload
+ok 15 - Icecave\Siesta\Router\PathRouteTest::testIdentity
+ok 16 - Icecave\Siesta\Router\PathRouteTest::testResolve
+ok 17 - Icecave\Siesta\Router\PathRouteTest::testResolveFailure
+ok 18 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "simple" ('/path/to/resource', '|^/path/to/resource$|', array(), array())
+ok 19 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "trailing slash" ('/path/to/resource/', '|^/path/to/resource$|', array(), array())
+ok 20 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 1" ('/path/:foo', '|^/path/([^/]+)$|', array('foo'), array())
+ok 21 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "named 2" ('/path/:foo/:bar', '|^/path/([^/]+)/([^/]+)$|', array('foo', 'bar'), array())
+ok 22 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 1" ('/path/:foo?', '|^/path(?:/([^/]+))?$|', array(), array('foo'))
+ok 23 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "optional 2" ('/path/:foo/:bar?', '|^/path/([^/]+)(?:/([^/]+))?$|', array('foo'), array('bar'))
+ok 24 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "embedded" ('/path/:foo/resource', '|^/path/([^/]+)/resource$|', array('foo'), array())
+ok 25 - Icecave\Siesta\Router\PatternCompilerTest::testCompile with data set "escaping" ('/path/:foo/.', '|^/path/([^/]+)/\\.$|', array('foo'), array())
+ok 26 - Icecave\Siesta\Router\RouteMatchTest::testRoute
+ok 27 - Icecave\Siesta\Router\RouteMatchTest::testEndpoint
+ok 28 - Icecave\Siesta\Router\RouteMatchTest::testArguments
+ok 29 - Icecave\Siesta\Router\RouterTest::testResolve
+ok 30 - Icecave\Siesta\Router\RouterTest::testResolveFailure
+ok 31 - Icecave\Siesta\Router\RouterTest::testAddRoute
+ok 32 - Icecave\Siesta\Router\RouterTest::testAddRouteReplace
+ok 33 - Icecave\Siesta\Router\RouterTest::testRemoveRoute
+ok 34 - Icecave\Siesta\Router\RouterTest::testRemoveRouteFailure
+ok 35 - Icecave\Siesta\Router\RouterTest::testRemoveRouteFailureNotIdentical
+1..35

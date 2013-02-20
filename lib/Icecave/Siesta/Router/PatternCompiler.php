@@ -16,7 +16,7 @@ class PatternCompiler
     /**
      * @param string $pathPattern
      *
-     * @return Route
+     * @return tuple<string, string, array>
      */
     public function compile($pathPattern)
     {
@@ -32,28 +32,36 @@ class PatternCompiler
             PREG_SPLIT_DELIM_CAPTURE
         );
 
+        $identity = '';
         $regexPattern = '';
-        $routingParameters = array();
         $identityParameters = array();
 
         foreach ($atoms as $index => $atom) {
             // Not a wildcard ...
             if ($index % 2 === 0) {
+                $identity .= $atom;
                 $regexPattern .= preg_quote($atom, '|');
+                continue;
+            }
+
+            $atomPattern = '(?P<' . trim($atom, ':/?') . '>[^/]+)';
+            $atomName = trim($atom, ':/?');
+
             // Optional named wildcard ...
-            } elseif ('/' === $atom[0]) {
-                $identityParameters[] = trim($atom, ':/?');
-                $regexPattern .= '(?:/([^/]+))?';
+            if ('/' === $atom[0]) {
+                $identity .= '/?';
+                $identityParameters[] = $atomName;
+                $regexPattern .= '(?:/' . $atomPattern . ')?';
             // Required named wildcard ...
             } else {
-                $routingParameters[] = trim($atom, ':/?');
-                $regexPattern .= '([^/]+)';
+                $identity .= '*';
+                $regexPattern .= $atomPattern;
             }
         }
 
         return array(
+            $identity,
             '|^' . $regexPattern . '$|',
-            $routingParameters,
             $identityParameters,
         );
     }

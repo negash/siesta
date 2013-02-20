@@ -24,7 +24,7 @@ class JsonEncoding extends AbstractEncoding
     {
         $this->typeCheck->decodePayload(func_get_args());
 
-        return json_decode($payload);
+        return json_decode($payload, true);
     }
 
     /**

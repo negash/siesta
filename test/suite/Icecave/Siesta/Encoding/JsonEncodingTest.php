@@ -3,7 +3,6 @@ namespace Icecave\Siesta\Encoding;
 
 use Eloquent\Liberator\Liberator;
 use PHPUnit_Framework_TestCase;
-use stdClass;
 
 class JsonEncodingTest extends PHPUnit_Framework_TestCase
 {
@@ -22,16 +21,14 @@ class JsonEncodingTest extends PHPUnit_Framework_TestCase
     {
         $result = Liberator::liberate($this->_encoding)->decodePayload('{"foo":"bar"}');
 
-        $expected = new stdClass;
-        $expected->foo = 'bar';
+        $expected = array('foo' => 'bar');
 
         $this->assertEquals($expected, $result);
     }
 
     public function testEncodePayload()
     {
-        $payload = new stdClass;
-        $payload->foo = 'bar';
+        $payload = array('foo' => 'bar');
 
         $result = Liberator::liberate($this->_encoding)->encodePayload($payload);
 

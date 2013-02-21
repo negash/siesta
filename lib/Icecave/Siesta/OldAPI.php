@@ -1,22 +1,29 @@
 <?php
 namespace Icecave\Siesta;
 
-use Icecave\Collections\Vector;
+use Icecave\Siesta\Encoding\EncodingInterface;
 use Icecave\Siesta\Encoding\EncodingSelector;
 use Icecave\Siesta\Encoding\EncodingSelectorInterface;
+use Icecave\Siesta\Endpoint\Endpoint;
 use Icecave\Siesta\Router\Router;
+use Icecave\Siesta\Router\PathRoute;
+use Icecave\Siesta\Router\PatternCompiler;
 use Icecave\Siesta\TypeCheck\TypeCheck;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Api
+abstract class Api
 {
     /**
      * @param Router|null                    $router
      * @param EncodingSelectorInterface|null $encodingSelector
+     * @param PatternCompiler|null           $patternCompiler
      */
-    public function __construct(Router $router = null, EncodingSelectorInterface $encodingSelector = null)
-    {
+    public function __construct(
+        Router $router = null,
+        EncodingSelectorInterface $encodingSelector = null,
+        PatternCompiler $patternCompiler = null
+    ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $router) {
@@ -27,14 +34,17 @@ class Api
             $encodingSelector = new EncodingSelector;
         }
 
+        if (null === $patternCompiler) {
+            $patternCompiler = new PatternCompiler;
+        }
+
         $this->router = $router;
+        $this->encodingOptions = array();
         $this->encodingSelector = $encodingSelector;
-        $this->encodingOptions = new Vector;
+        $this->patternCompiler = $patternCompiler;
+        $this->isConfigured = false;
     }
 
-    /**
-     * @return RouterInterface
-     */
     public function router()
     {
         $this->typeCheck->router(func_get_args());
@@ -43,24 +53,32 @@ class Api
     }
 
     /**
-     * @return EncodingSelectorInterface
+     * @param EncodingInterface $encoding
      */
-    public function encodingSelector()
+    public function addEncoding(EncodingInterface $encoding)
     {
-        $this->typeCheck->encodingSelector(func_get_args());
+        $this->typeCheck->addEncoding(func_get_args());
 
-        return $this->encodingSelector;
+        return $this->encodingOptions[] = $encoding;
     }
 
     /**
-     * @return Vector
+     * @param string $pathPattern
+     * @param object $endpointImplementation
      */
-    public function encodingOptions()
+    public function route($pathPattern, $endpointImplementation)
     {
-        $this->typeCheck->encodingOptions(func_get_args());
+        $this->typeCheck->route(func_get_args());
 
-        return $this->encodingOptions;
+        list($identity, $regexPattern, $identityParameters) = $this->patternCompiler->compile($pathPattern);
+
+        $endpoint = new EndPoint($endpointImplementation, $identityParameters);
+        $route = new PathRoute($identity, $regexPattern, $endpoint);
+
+        $this->router()->addRoute($route);
     }
+
+    abstract public function configure();
 
     /**
      * @param Request  $request
@@ -70,8 +88,13 @@ class Api
     {
         $this->typeCheck->process(func_get_args());
 
+        if (!$this->isConfigured) {
+            $this->configure($this->router, $this->encodingOptions);
+            $this->isConfigured = true;
+        }
+
         if ($routeMatch = $this->router->resolve($request)) {
-            $encoding = $this->encodingSelector->select($request, $this->encodingOptions->elements());
+            $encoding = $this->encodingSelector->select($request, $this->encodingOptions);
             $inputPayload = $encoding->readRequest($request);
             $outputPayload = $routeMatch->endpoint()->process($request, $routeMatch, $inputPayload);
             $encoding->writeResponse($request, $response, $outputPayload);
@@ -95,6 +118,8 @@ class Api
 
     private $typeCheck;
     private $router;
-    private $encodingSelector;
     private $encodingOptions;
+    private $encodingSelector;
+    private $patternCompiler;
+    private $isConfigured;
 }

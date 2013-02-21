@@ -8,45 +8,48 @@ use Icecave\Siesta\TestFixtures\EndpointImplementation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MyApi extends Api
+
+class ApiVersion1 implements ApiInterface
 {
-    public function configure()
+    public function __construct($endpoint)
     {
-        $this->addEncoding(new JsonEncoding);
-        $this->route('/:owner/:id?', $this->endpoint);
+        $this->endpoint = $endpoint;
     }
 
-    // Hacks to persist data for example ...
-    // This is not part of the bootstrapping of an API generally.
-    public function __construct($filename = '/tmp/siesta-endpoint-test.ser')
+    public function configure(DefinitionInterface $def)
     {
-        parent::__construct();
+        $def->setMajorVersion(1);
 
-        $this->filename = $filename;
-        if (file_exists($filename)) {
-            $this->endpoint = unserialize(file_get_contents($filename));
-        }
-
-        if (!$this->endpoint instanceof EndpointImplementation) {
-            $this->endpoint = new EndpointImplementation;
-        }
+        $def->add('/:owner/:id?', $this->endpoint);
     }
 
-    public function __destruct()
-    {
-        if ($this->endpoint instanceof EndpointImplementation) {
-            file_put_contents($this->filename, serialize($this->endpoint));
-        }
-    }
-
-    private $filename;
     private $endpoint;
 }
 
-// Create API and serve request ...
+
+
+
+
+
+
+
+
+
+
+
+$filename = '/tmp/siesta-endpoint-test.ser';
+$endpoint = unserialize(file_get_contents($filename));
+if (!$endpoint instanceof EndpointImplementation) {
+    $endpoint = new EndpointImplementation;
+}
+
 $request = Request::createFromGlobals();
 $response = new Response;
 
-$api = new MyApi;
+$api = new Api;
+$api->add(new ApiVersion1($endpoint));
 $api->process($request, $response);
+
 $response->send();
+
+file_put_contents($filename, serialize($endpoint));

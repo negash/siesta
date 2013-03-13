@@ -6,7 +6,7 @@ class JsonEncoding implements EncodingInterface
     /**
      * @return string
      */
-    public function contentType()
+    public function canonicalContentType()
     {
         return 'application/json';
     }

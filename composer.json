@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "eloquent/enumeration": "*",
+        "eloquent/enumeration": "~3",
         "icecave/collections": "~0.6",
         "icecave/evoke": "dev-develop",
         "symfony/http-foundation": "~2.2"

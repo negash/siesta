@@ -1,7 +1,6 @@
 <?php
 namespace Icecave\Siesta\Encoding;
 
-use Eloquent\Liberator\Liberator;
 use PHPUnit_Framework_TestCase;
 
 class JsonEncodingTest extends PHPUnit_Framework_TestCase
@@ -11,29 +10,31 @@ class JsonEncodingTest extends PHPUnit_Framework_TestCase
         $this->_encoding = new JsonEncoding;
     }
 
-    public function testConstructor()
+    public function testCanonicalContentType()
+    {
+        $this->assertSame('application/json', $this->_encoding->canonicalContentType());
+    }
+
+    public function testSupportsContentType()
     {
         $this->assertTrue($this->_encoding->supportsContentType('application/json'));
-        $this->assertTrue($this->_encoding->supportsFileExtension('json'));
     }
 
     public function testDecodePayload()
     {
-        $result = Liberator::liberate($this->_encoding)->decodePayload('{"foo":"bar"}');
-
+        $payload = '{"foo":"bar"}';
+        $result = $this->_encoding->decodePayload($payload);
         $expected = array('foo' => 'bar');
 
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     public function testEncodePayload()
     {
         $payload = array('foo' => 'bar');
-
-        $result = Liberator::liberate($this->_encoding)->encodePayload($payload);
-
+        $result = $this->_encoding->encodePayload($payload);
         $expected = '{"foo":"bar"}';
 
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 }

@@ -48,11 +48,11 @@ class Application
 
     protected function selectInputEncoding(HttpRequest $httpRequest)
     {
-        $contentType = $httpRequest->getContentType();
+        $contentType = $httpRequest->headers->get('Content-Type');
         $encoding = $this->encodingSet->findByContentType($contentType);
 
         if (null === $encoding) {
-            throw new HttpException(415, 'Can not decode ' . $contentType . ' request.');
+            throw new HttpException(415, 'Can not decode request (' . $contentType . ').');
         }
 
         return array($encoding, $contentType);
@@ -83,7 +83,7 @@ class Application
     {
         if ($content = $httpRequest->getContent()) {
             list($encoding, $contentType) = $this->selectInputEncoding($httpRequest);
-            $payload = $encoding->decodePayload($payload);
+            $payload = $encoding->decodePayload($content);
         } else {
             $payload = null;
         }

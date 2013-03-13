@@ -6,12 +6,24 @@ use stdClass;
 
 class EndpointImplementation extends AbstractEndpoint
 {
-    public function index($owner)
+    public function index($owner, $order = 'asc')
     {
         $this->calls[] = array(__FUNCTION__, func_get_args());
 
         if (array_key_exists($owner, $this->items)) {
-            return array_values($this->items[$owner]);
+            $items = array_values($this->items[$owner]);
+
+            usort(
+                $items,
+                function ($a, $b) use ($order) {
+                    if ($order === 'desc') {
+                        return strcmp($b->description, $a->description);
+                    }
+                    return strcmp($a->description, $b->description);
+                }
+            );
+
+            return $items;
         }
 
         return array();

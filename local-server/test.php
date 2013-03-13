@@ -5,7 +5,6 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../test/lib/Icecave/Siesta/TestFixtures/EndpointImplementation.php';
 
 use Icecave\Siesta\AbstractRouter;
-// use Icecave\Siesta\AbstractEndpoint;
 use Icecave\Siesta\TestFixtures\EndpointImplementation;
 use Icecave\Siesta\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +42,7 @@ class TestRouter extends AbstractRouter
 {
     public function itemsRoute()
     {
-        return new EndpointImplementation;
+        return new TestEndpoint;
     }
 }
 

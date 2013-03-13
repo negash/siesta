@@ -6,7 +6,7 @@ interface EncodingInterface
     /**
      * @return string
      */
-    public function contentType();
+    public function canonicalContentType();
 
     /**
      * @param string $contentType

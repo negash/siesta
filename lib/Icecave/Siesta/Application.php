@@ -31,7 +31,7 @@ class Application
             );
         } catch (HttpException $e) {
             $encoding = $this->encodingSet->defaultEncoding();
-            $httpResponse->headers->set('Content-Type', $encoding->contentType());
+            $httpResponse->headers->set('Content-Type', $encoding->canonicalContentType());
             $httpResponse->setStatusCode($e->getCode());
             $httpResponse->setContent(
                 $encoding->encodePayload($this->createErrorPayload($e))
@@ -73,7 +73,7 @@ class Application
 
         if ($allowDefault) {
             $encoding = $this->encodingSet->defaultEncoding();
-            return array($encoding, $encoding->contentType());
+            return array($encoding, $encoding->canonicalContentType());
         }
 
         throw new HttpException(406, 'Unable to to produce response in any of the request content types (' . implode(', ', $contentTypes) . ').');

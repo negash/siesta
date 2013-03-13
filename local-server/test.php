@@ -1,52 +1,54 @@
 <?php
+error_reporting(-1);
+
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../test/lib/Icecave/Siesta/TestFixtures/EndpointImplementation.php';
 
-use Icecave\Siesta\Api;
-use Icecave\Siesta\Encoding\JsonEncoding;
+use Icecave\Siesta\AbstractRouter;
+// use Icecave\Siesta\AbstractEndpoint;
 use Icecave\Siesta\TestFixtures\EndpointImplementation;
+use Icecave\Siesta\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MyApi extends Api
+
+/**
+ * Add some basic serialization to the endpoint.
+ */
+class TestEndpoint extends EndpointImplementation
 {
-    public function configure()
+    public function __construct()
     {
-        $this->addEncoding(new JsonEncoding);
-        $this->route('/:owner/:id?', $this->endpoint);
-    }
+        $this->filename = '/tmp/seista-endpoint-test.ser';
 
-    // Hacks to persist data for example ...
-    // This is not part of the bootstrapping of an API generally.
-    public function __construct($filename = '/tmp/siesta-endpoint-test.ser')
-    {
-        parent::__construct();
-
-        $this->filename = $filename;
-        if (file_exists($filename)) {
-            $this->endpoint = unserialize(file_get_contents($filename));
-        }
-
-        if (!$this->endpoint instanceof EndpointImplementation) {
-            $this->endpoint = new EndpointImplementation;
+        if (file_exists($this->filename)) {
+            list($this->nextId, $this->items) = unserialize(
+                file_get_contents($this->filename)
+            );
         }
     }
 
     public function __destruct()
     {
-        if ($this->endpoint instanceof EndpointImplementation) {
-            file_put_contents($this->filename, serialize($this->endpoint));
-        }
+        file_put_contents(
+            $this->filename,
+            serialize(
+                array($this->nextId, $this->items)
+            )
+        );
     }
-
-    private $filename;
-    private $endpoint;
 }
 
-// Create API and serve request ...
+class TestRouter extends AbstractRouter
+{
+    public function itemsRoute()
+    {
+        return new EndpointImplementation;
+    }
+}
+
 $request = Request::createFromGlobals();
 $response = new Response;
-
-$api = new MyApi;
-$api->process($request, $response);
+$application = new Application(new TestRouter);
+$application->execute($request, $response);
 $response->send();

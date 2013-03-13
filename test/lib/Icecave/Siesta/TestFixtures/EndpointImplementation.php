@@ -1,16 +1,17 @@
 <?php
 namespace Icecave\Siesta\TestFixtures;
 
+use Icecave\Siesta\AbstractEndpoint;
 use stdClass;
 
-class EndpointImplementation
+class EndpointImplementation extends AbstractEndpoint
 {
     public function index($owner)
     {
         $this->calls[] = array(__FUNCTION__, func_get_args());
 
         if (array_key_exists($owner, $this->items)) {
-            return $this->items[$owner];
+            return array_values($this->items[$owner]);
         }
 
         return array();

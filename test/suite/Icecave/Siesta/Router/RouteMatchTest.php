@@ -8,7 +8,7 @@ class RouteMatchTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->_route = Phake::mock(__NAMESPACE__ . '\RouteInterface');
+        $this->_route = Phake::mock(__NAMESPACE__ . '\RouterInterface');
         $this->_endpoint = Phake::mock('Icecave\Siesta\Endpoint\EndpointInterface');
         $this->_arguments = array('foo' => 'bar');
         $this->_match = new RouteMatch($this->_route, $this->_endpoint, $this->_arguments);
